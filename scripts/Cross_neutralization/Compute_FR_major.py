@@ -21,16 +21,23 @@ import pdb
 
 
 """Load SpikeGroups list"""
-file1 = open(sys.argv[1], "rb") 
-SpikeGroups_list = pickle.load(file1)["names"]
-file1.close()
+try:
+    file1 = open(sys.argv[1], "rb") 
+    SpikeGroups_list = pickle.load(file1)["names"]
+    file1.close()
+except:
+    SpikeGroups_list = [] ### placeholder for some runs not needing the parameter
 
-"""Load Mutation profile dictionary"""
-file1 = open(sys.argv[2], "rb") 
-Mut_infos = pickle.load(file1)
-mut_x_sites_dic = Mut_infos["positions"]
-AA_change_dic = Mut_infos["AA_changes"]
-file1.close()
+"""Load Mutation profile dictionary and aa_changes"""
+try:
+    file1 = open(sys.argv[2], "rb") 
+    Mut_infos = pickle.load(file1)
+    mut_x_sites_dic = Mut_infos["positions"]
+    AA_change_dic = Mut_infos["AA_changes"]
+    file1.close()
+except:
+    mut_x_sites_dic = {} ### placeholder for some runs not needing the parameter
+    AA_change_dic = {} ### placeholder for some runs not needing the parameter
 
 variant_x_names_cross = SpikeGroups_list
 # include wild-type
@@ -282,9 +289,12 @@ def cross_reactivity(variant_name, escape_per_sites, Ab_classes, mut_sites_per_v
  
 ### Compute Cross reactivity between major variant groups for sanity checks, 
 #only computed when the timeline is wide enough to contain the major variant groups
-file = open("Spikegroups_membership.pck", "rb")
-Pseudogroup_dic = pickle.load(file)
-file.close()
+try:
+    file = open("Spikegroups_membership.pck", "rb")
+    Pseudogroup_dic = pickle.load(file)
+    file.close()
+except:
+    Pseudogroup_dic = {} ### placeholder for when parameter for some runs not needing parameter
 
 k = 7
 lineages_sim = []
@@ -337,7 +347,7 @@ for spklin in lineages_sim:
 
 if "Wuhan-Hu-1" not in Top_Pseudo:
     Top_Pseudo = ["Wuhan-Hu-1"] + list(Top_Pseudo)
-    
+
 a = 1
 if len(Top_Pseudo)!=0:
     Cross_react_dic = {}

@@ -60,10 +60,13 @@ try:
 except:
     plot_major = None
     
-file = open("Spikegroups_membership.pck", "rb")
-Pseudogroup_dic = pickle.load(file)
-file.close()
-
+try:
+    file = open("Spikegroups_membership.pck", "rb")
+    Pseudogroup_dic = pickle.load(file)
+    file.close()
+except:
+    Pseudogroup_dic = {} ### placeholder for when parameter for some runs not needing parameter
+    
 if plot_major not in ("True"):
     cross_file = open(sys.argv[1], "rb")
     Cross_Epitope_Dic_orig = pickle.load(cross_file)

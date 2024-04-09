@@ -44,7 +44,6 @@ def Display_Envelope(t, Y, Z, is_log, labels, figsize = (7, 7), xysize = (15,15)
     if linestyle is None:
         linestyle = ["-"]*Y.shape[0]
     
-    
     if palette is None:
         for i in range(Y.shape[0]):
             if color is None:
@@ -129,9 +128,13 @@ yval = "Virus neutralization\n probability"
 s = 0
 custom_col = sns.color_palette("Set2", 100) 
 
-file = open("Spikegroups_membership.pck", "rb")
-Pseudogroup_dic = pickle.load(file)
-file.close()  
+try:
+    file = open("Spikegroups_membership.pck", "rb")
+    Pseudogroup_dic = pickle.load(file)
+    file.close()
+except:
+    Pseudogroup_dic = {} ### placeholder for when parameter for some runs not needing parameter
+    
 for i in range(num_groups):
     Lin_i_list = str(sys.argv[k+i])
     splited_var = np.array(Lin_i_list.split("/"))
@@ -166,16 +169,20 @@ for i in range(num_groups):
                 Min_list.append(EnvO_Min)
                 Max_list.append(EnvO_Max)
                 col_o = str(sys.argv[k+num_groups+i])
-                if col_o in col_list:
-                    if s<len(custom_col):
-                        col_o = custom_col[s]
+                
+                if s<len(custom_col):
+                    if "/" not in str(col_o):
+                        col_o = col_o
                     else:
-                        rand_num = np.random.choice(1, 100)
-                        col_o = sns.color_palette("rocked", rand_num)[0] 
-                    s +=1
-                    
+                        split_col = str(col_o).split("/")
+                        col_o = tuple([float(split_col[c]) for c in range(len(split_col))]) ### anything else is error)
+                else:
+                    rand_num = np.random.choice(1, 100)
+                    col_o = sns.color_palette("rocked", rand_num)[0] 
+                s +=1
                 
                 col_list.append(col_o)
+                
                 is_log=False
                 
                 ### save individual plots
@@ -204,7 +211,6 @@ for i in range(num_groups):
             status.append("Not avail")
             
         Lin_status.append(Lin_i)
-
 
 PreFig(xsize = 20, ysize = 20)
 figsize = (10,7)

@@ -47,6 +47,7 @@ mut_x_sites_dic["Wuhan-Hu-1"] = []
 AA_change_dic["Wuhan-Hu-1"] = {}
 
 """Load DMS Escape fraction data"""
+print(sys.argv[3])
 Escape_Fraction = pd.read_csv(sys.argv[3])
 Ab_classes = np.unique(Escape_Fraction["group"].values.astype(str))
 
@@ -470,7 +471,7 @@ if Lin_name not in ("ALL", "FR_DMS_sites", "missing", "only_delta"):
             Pseudogroup_dic = pickle.load(file)
             file.close()
         except:
-            Pseudogroup_dic = {} ### placeholder for when parameter is not given
+            Pseudogroup_dic = {} ### placeholder for when parameter for some runs not needing parameter
         
         k = 5
         if (n_groups == 1) and (str(sys.argv[k])[-24:] == "Vaccination_Timeline.csv") and (str(sys.argv[k])[:9] != "outbreak/"): ### Hard coded for vaccination pseudo variants
