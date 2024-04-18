@@ -1,0 +1,77 @@
+# Main workflow of VASIL: Comparing Countries Immunological landscape
+import os
+
+
+report: "report/workflow.rst"
+
+
+rule_all_common = (
+    ["Compared_Countries/" + config["main_country"] + "/plot_status.csv"],
+)
+
+
+rule all:
+    input:
+        rule_all_common,
+
+
+countries_list = [config["main_country"]] + [
+    config["countries"][i]
+    for i in range(len(config["countries"]))
+    if config["countries"][i] != config["main_country"]
+]
+countries_dir_list = [
+    config["countries_dir"][config["countries"].index(config["main_country"])]
+] + [
+    config["countries_dir"][config["countries"].index(config["countries"][i])]
+    for i in range(len(config["countries"]))
+    if config["countries"][i] != config["main_country"]
+]
+countries_subdir_list = [
+    config["countries"][config["countries"].index(config["main_country"])]
+] + [
+    config["countries"][config["countries"].index(config["countries"][i])]
+    for i in range(len(config["countries"]))
+    if config["countries"][i] != config["main_country"]
+]
+countries_labels_list = [
+    config["countries_labels"][config["countries"].index(config["main_country"])]
+] + [
+    config["countries_labels"][config["countries"].index(config["countries"][i])]
+    for i in range(len(config["countries"]))
+    if config["countries"][i] != config["main_country"]
+]
+countries_colors_list = [
+    config["color_per_country"][config["countries"].index(config["main_country"])]
+] + [
+    config["color_per_country"][config["countries"].index(config["countries"][i])]
+    for i in range(len(config["countries"]))
+    if config["countries"][i] != config["main_country"]
+]
+
+
+countries = ("/").join(countries_list)
+main_dir = ("/new/").join(countries_dir_list)
+sub_dir = ("/").join(countries_subdir_list)
+countries_labels = ("/").join(countries_labels_list)
+date_start = ("/").join(config["date_start"])
+date_end = ("/").join(config["date_end"])
+joined_cols = ("/new/").join(countries_colors_list)
+
+
+rule compare_countries:
+    params:
+        main_dir=main_dir,
+        sub_dir=sub_dir,
+        labels=countries_labels,
+        weight_prop=config["weight_prop"],
+        lineages=config["lineages"],
+        num_groups=len(config["lineages"]),
+        date_start=date_start,
+        date_end=date_end,
+        cols=joined_cols,
+    output:
+        resdir=directory("Compared_Countries/" + config["main_country"]),
+        res="Compared_Countries/" + config["main_country"] + "/plot_status.csv",
+    shell:
+        "python {workflow.basedir}/scripts/plotting/compare_countries.py {params.main_dir} {params.sub_dir} {params.labels} {params.weight_prop} {params.date_start} {params.date_end} {params.num_groups} {output.resdir} {params.lineages} {params.cols}"
