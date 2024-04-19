@@ -18,68 +18,16 @@ import re
 import pickle
 import sys
 import pdb
+import os
 
+# Disable
+def blockPrint():
+    sys.stdout = open(os.devnull, 'w')
 
-"""Load SpikeGroups list"""
-try:
-    file1 = open(sys.argv[1], "rb") 
-    SpikeGroups_list = pickle.load(file1)["names"]
-    file1.close()
-except:
-    SpikeGroups_list = [] ### placeholder for some runs not needing the parameter
+# Restore
+def enablePrint():
+    sys.stdout = sys.__stdout__
 
-"""Load Mutation profile dictionary and aa_changes"""
-try:
-    file1 = open(sys.argv[2], "rb") 
-    Mut_infos = pickle.load(file1)
-    mut_x_sites_dic = Mut_infos["positions"]
-    AA_change_dic = Mut_infos["AA_changes"]
-    file1.close()
-except:
-    mut_x_sites_dic = {} ### placeholder for some runs not needing the parameter
-    AA_change_dic = {} ### placeholder for some runs not needing the parameter
-
-variant_x_names_cross = SpikeGroups_list
-# include wild-type
-if "Wuhan-Hu-1" not in variant_x_names_cross:
-    variant_x_names_cross = ["Wuhan-Hu-1"]+list(variant_x_names_cross)
-
-mut_x_sites_dic["Wuhan-Hu-1"] = []
-AA_change_dic["Wuhan-Hu-1"] = {}
-
-"""Load DMS Escape fraction data"""
-Escape_Fraction = pd.read_csv(sys.argv[3])
-Ab_classes = np.unique(Escape_Fraction["group"].values.astype(str))
-
-"""Load lineage name to assess and it's mutation profile"""
-try:
-    Lin_name = sys.argv[4]
-    mut_x_sites_dic_updated = mut_x_sites_dic.copy()
-    AA_change_dic_updated = AA_change_dic.copy()
-    if "outbreak" not in Lin_name:
-        mut_file = open(sys.argv[5], "r")
-        mut_lin0 = mut_file.readlines()
-        mut_file.close()
-    
-        mut_Lin = []
-        aa_lin = {}
-        for mut in mut_lin0:
-            if "\n" in mut:
-                mut = mut.replace("\n","")
-                
-            if mut[:3] not in ("DEL", "del"):
-                if len(re.findall(r'\d+', mut))>0:
-                    pos0 = re.findall(r'\d+', mut)
-                    if len(pos0) == 1:
-                        pos = str(pos0[0])
-                        mut_Lin.append(pos)   
-                        aa_lin[pos] = mut
-        """Update mutation profile dictionary"""
-        mut_x_sites_dic_updated[Lin_name] = mut_Lin
-        AA_change_dic_updated[Lin_name] = aa_lin
-except:
-    mut_x_sites_dic_updated = mut_x_sites_dic.copy()
-    AA_change_dic_updated = AA_change_dic.copy()
 
 """Relevant functions"""
 def get_pos(var_1, var_2, AA_change_dic_1, AA_change_dic_2, mut_x_sites_dic_1, mut_x_sites_dic_2):
@@ -183,7 +131,7 @@ def FR_xy(i, mut_sites, mut_bool_g1, mut_bool_g2, escape_ab_dic, ab, variant_nam
                 Missing_cond_data[:, d] = np.array(jb_res[d][1])
         else:
             """ Brute force method """
-            print("joblib.Parallel failed running, using brute force looping")
+            #print("joblib.Parallel failed running, using brute force looping")
             for d in range(len(conditions)):
                 #print(d+1, len(conditions))
                 Inter_Cond_Mut = Where_Mut & Where_Cond[np.newaxis, d, :]
@@ -191,7 +139,7 @@ def FR_xy(i, mut_sites, mut_bool_g1, mut_bool_g2, escape_ab_dic, ab, variant_nam
                 Missing_cond_data[:, d] = ~np.any(np.any(Where_Mut & Where_Cond[np.newaxis, d, :], axis = 2), axis = 1)
     else:
         """ Brute force method """
-        print("Using brute force looping")
+        #print("Using brute force looping")
         for d in range(len(conditions)):
             #print(d+1, len(conditions))
             Inter_Cond_Mut = Where_Mut & Where_Cond[np.newaxis, d, :]
@@ -289,145 +237,216 @@ def cross_reactivity(variant_name, escape_per_sites, Ab_classes, mut_sites_per_v
  
 ### Compute Cross reactivity between major variant groups for sanity checks, 
 #only computed when the timeline is wide enough to contain the major variant groups
-try:
-    file = open("Spikegroups_membership.pck", "rb")
-    Pseudogroup_dic = pickle.load(file)
-    file.close()
-except:
-    Pseudogroup_dic = {} ### placeholder for when parameter for some runs not needing parameter
-
-k = 7
-lineages_sim = []
-while k<(int(sys.argv[6])+7):
-    lineages_sim.append(sys.argv[k])
-    k +=1
+def Compute_FR_major(SpikeGroupsFile = None, MutProfiles = None, 
+                     dms_data = "data/epitope_data/dms_per_ab_per_site.csv", 
+                     lineage_focus = None, mutations_focus = None,
+                     len_group = 1, group = None, mut_group = None,
+                     result_location = ""):
+    #blockPrint()
+    """Load SpikeGroups list"""
+    try:
+        file1 = open(SpikeGroupsFile, "rb") 
+        SpikeGroups_list = pickle.load(file1)["names"]
+        file1.close()
+    except:
+        SpikeGroups_list = [] ### placeholder for some runs not needing the parameter
     
-mut_sim = []
-while k<(int(sys.argv[6])+7+len(lineages_sim)):
-    mut_sim.append(sys.argv[k])
-    k +=1
-        
-Top_Pseudo = []
-Pseudo_keys = list(Pseudogroup_dic.keys())
-
-for spklin in lineages_sim:
-    if spklin in Pseudo_keys:
-        Top_Pseudo.append(spklin)
-        mut_maj = mut_x_sites_dic[Pseudogroup_dic[spklin]]
-        """Update mutation profile dictionary"""        
-        mut_x_sites_dic_updated[spklin] = mut_maj
-        AA_change_dic_updated[spklin] = AA_change_dic[Pseudogroup_dic[spklin]]
-    else:           
-        try:
-            mut_file = open(mut_sim[lineages_sim.index(spklin)], "r")
+    """Load Mutation profile dictionary and aa_changes"""
+    try:
+        file1 = open(MutProfiles, "rb") 
+        Mut_infos = pickle.load(file1)
+        mut_x_sites_dic = Mut_infos["positions"]
+        AA_change_dic = Mut_infos["AA_changes"]
+        file1.close()
+    except:
+        mut_x_sites_dic = {} ### placeholder for some runs not needing the parameter
+        AA_change_dic = {} ### placeholder for some runs not needing the parameter
+    
+    variant_x_names_cross = SpikeGroups_list
+    # include wild-type
+    if "Wuhan-Hu-1" not in variant_x_names_cross:
+        variant_x_names_cross = ["Wuhan-Hu-1"]+list(variant_x_names_cross)
+    
+    mut_x_sites_dic["Wuhan-Hu-1"] = []
+    AA_change_dic["Wuhan-Hu-1"] = {}
+    
+    """Load DMS Escape fraction data"""
+    Escape_Fraction = pd.read_csv(dms_data)
+    Ab_classes = np.unique(Escape_Fraction["group"].values.astype(str))
+    
+    """Load lineage name to assess and it's mutation profile"""
+    try:
+        Lin_name = lineage_focus
+        mut_x_sites_dic_updated = mut_x_sites_dic.copy()
+        AA_change_dic_updated = AA_change_dic.copy()
+        if "outbreak" not in Lin_name:
+            mut_file = open(mutations_focus, "r")
             mut_lin0 = mut_file.readlines()
             mut_file.close()
-            mut_maj= []
+        
+            mut_Lin = []
             aa_lin = {}
             for mut in mut_lin0:
                 if "\n" in mut:
                     mut = mut.replace("\n","")
                     
                 if mut[:3] not in ("DEL", "del"):
-                    pos0 = re.findall(r'\d+', mut)
-                    if len(pos0) == 1:
-                        pos = str(pos0[0])
-                        if pos not in list(aa_lin.keys()):
-                            mut_maj.append(pos)   
-                            aa_lin[pos] = [mut]
-                        else:
-                            aa_lin[pos].append(mut)   
+                    if len(re.findall(r'\d+', mut))>0:
+                        pos0 = re.findall(r'\d+', mut)
+                        if len(pos0) == 1:
+                            pos = str(pos0[0])
+                            mut_Lin.append(pos)   
+                            aa_lin[pos] = mut
+            """Update mutation profile dictionary"""
+            mut_x_sites_dic_updated[Lin_name] = mut_Lin
+            AA_change_dic_updated[Lin_name] = aa_lin
+    except:
+        mut_x_sites_dic_updated = mut_x_sites_dic.copy()
+        AA_change_dic_updated = AA_change_dic.copy()
+    
+    
+    try:
+        file = open("Spikegroups_membership.pck", "rb")
+        Pseudogroup_dic = pickle.load(file)
+        file.close()
+    except:
+        Pseudogroup_dic = {} ### placeholder for when parameter for some runs not needing parameter
+    
+    k = 0
+    lineages_sim = []
+    while k<(int(len_group)):
+        lineages_sim.append(group[k])
+        k +=1
+        
+    mut_sim = []
+    k=0
+    while k<(int(len_group)):
+        mut_sim.append(mut_group[k])
+        k +=1
             
+    Top_Pseudo = []
+    Pseudo_keys = list(Pseudogroup_dic.keys())
+    
+    for spklin in lineages_sim:
+        if spklin in Pseudo_keys:
+            Top_Pseudo.append(spklin)
+            mut_maj = mut_x_sites_dic[Pseudogroup_dic[spklin]]
             """Update mutation profile dictionary"""        
             mut_x_sites_dic_updated[spklin] = mut_maj
-            AA_change_dic_updated[spklin] = aa_lin
-            Top_Pseudo.append(spklin)
+            AA_change_dic_updated[spklin] = AA_change_dic[Pseudogroup_dic[spklin]]
+        else:           
+            try:
+                mut_file = open(mut_sim[lineages_sim.index(spklin)], "r")
+                mut_lin0 = mut_file.readlines()
+                mut_file.close()
+                mut_maj= []
+                aa_lin = {}
+                for mut in mut_lin0:
+                    if "\n" in mut:
+                        mut = mut.replace("\n","")
+                        
+                    if mut[:3] not in ("DEL", "del"):
+                        pos0 = re.findall(r'\d+', mut)
+                        if len(pos0) == 1:
+                            pos = str(pos0[0])
+                            if pos not in list(aa_lin.keys()):
+                                mut_maj.append(pos)   
+                                aa_lin[pos] = [mut]
+                            else:
+                                aa_lin[pos].append(mut)   
+                
+                """Update mutation profile dictionary"""        
+                mut_x_sites_dic_updated[spklin] = mut_maj
+                AA_change_dic_updated[spklin] = aa_lin
+                Top_Pseudo.append(spklin)
+            except:
+                pass
+    
+    if "Wuhan-Hu-1" not in Top_Pseudo:
+        Top_Pseudo = ["Wuhan-Hu-1"] + list(Top_Pseudo)
+    
+    a = 1
+    if len(Top_Pseudo)!=0:
+        Cross_react_dic = {}
+        mut_x_sites_dic_used = mut_x_sites_dic_updated.copy()
+        AA_change_dic_used = AA_change_dic_updated.copy()
+        try:
+            mut_x_sites_dic_used[Lin_name] = mut_Lin
+            Top_Pseudo.append(Lin_name)
         except:
             pass
-
-if "Wuhan-Hu-1" not in Top_Pseudo:
-    Top_Pseudo = ["Wuhan-Hu-1"] + list(Top_Pseudo)
-
-a = 1
-if len(Top_Pseudo)!=0:
-    Cross_react_dic = {}
-    mut_x_sites_dic_used = mut_x_sites_dic_updated.copy()
-    AA_change_dic_used = AA_change_dic_updated.copy()
-    try:
-        mut_x_sites_dic_used[Lin_name] = mut_Lin
-        Top_Pseudo.append(Lin_name)
-    except:
-        pass
-      
-    # compute mean IC50 per Ab_classes
-    IC50_group = Escape_Fraction.groupby('condition', as_index=False).first()[['condition', 'IC50', 'group']]
-    mean_IC50_per_group = IC50_group.groupby('group')['IC50'].mean().reset_index()
-    print("Mean IC50 per Epitope Classes")
-    print(mean_IC50_per_group)
-    
-    Cross_react_dic_wght = {}
-    
-    for ab in Ab_classes:
-        print("Assess major lineages/pseudogroups with the NTD-RBD mutation positions ")
-        print("Cross reactivity countdown", a, "out of %d epitope clases"%len(Ab_classes))
-        if ab!= "NTD":
-            Cross_Lin, Missed, Greater_one = cross_reactivity((Top_Pseudo, Top_Pseudo), 
-                                                                  Escape_Fraction, 
-                                                                  [ab],
-                                                                  mut_x_sites_dic_used,
-                                                                  AA_change_dic = AA_change_dic_updated,
-                                                                  joblib=True)
-            
-            FRxy_ab = Cross_Lin[ab]
-            Cross_react_dic[ab] = FRxy_ab.copy()
-            Cross_react_dic_wght[ab] = FRxy_ab*((mean_IC50_per_group["IC50"].values[mean_IC50_per_group["group"] == ab])[0])
-        a +=1
-    
-    Cross_react_dic["variant_list"] = list(Top_Pseudo)
-    Cross_react_dic_wght["variant_list"] = list(Top_Pseudo)
-    
-    
-    """Add FR to NTD-targeting AB assuming a FR of 10 to each mutations sites included in NTD Antigenic supersite"""   
-    n = len(Cross_react_dic["variant_list"])
-    FR_NTD = np.ones((n, n))
-    mut_profiles = []
-    for i in range(n):
-        var_1 = Cross_react_dic["variant_list"][i]
-        if len(list(AA_change_dic_updated[var_1].keys())) > 0:
-            var_1_profiles = np.concatenate(tuple([AA_change_dic_updated[var_1][m1] for m1 in list(AA_change_dic_updated[var_1].keys())]))
-            mut_profiles.append("/".join(sorted(var_1_profiles)))
-        else:
-            mut_profiles.append("")
-            
-        for j in range(n):
-            if i > j:
-                var_2 = Cross_react_dic["variant_list"][j]
-                
-                sites = get_pos(var_1, var_2, AA_change_dic_updated, AA_change_dic_updated, mut_x_sites_dic_updated, mut_x_sites_dic_updated)
-                
-                FR_sites = 1
-                pos_done = []
-                for s in sites:
-                    s = int(s)
-                    if ((14<=s)&(s<=20)) or ((140<=s)&(s<=158)) or ((245<=s)&(s<=264)):
-                        if s not in pos_done:
-                            FR_sites *= 10
-                            pos_done.append(s)
-
-                            
-                FR_NTD[i, j] = FR_sites
-                FR_NTD[j, i] = FR_sites
+          
+        # compute mean IC50 per Ab_classes
+        IC50_group = Escape_Fraction.groupby('condition', as_index=False).first()[['condition', 'IC50', 'group']]
+        mean_IC50_per_group = IC50_group.groupby('group')['IC50'].mean().reset_index()
+        #print("Mean IC50 per Epitope Classes")
+        #print(mean_IC50_per_group)
         
-    Cross_react_dic["NTD"] = FR_NTD.copy()
-    Cross_react_dic["Mutations"] = {"mut_profiles":mut_profiles, "positions":mut_x_sites_dic_updated, "AA_changes":AA_change_dic_updated}
-
-    Cross_react_dic_wght["NTD"] = FR_NTD.copy()
-    Cross_react_dic_wght["Mutations"] = {"mut_profiles":mut_profiles, "positions":mut_x_sites_dic_updated, "AA_changes":AA_change_dic_updated}
-
-    file0 = open(sys.argv[k], "wb") 
-    pickle.dump(Cross_react_dic, file0)
-    file0.close()
-
-    file1 = open(str(sys.argv[k])[:-4]+"_weighted.pck", "wb") 
-    pickle.dump(Cross_react_dic_wght, file1)
-    file1.close()     
+        Cross_react_dic_wght = {}
+        
+        for ab in Ab_classes:
+            #print("Assess major lineages/pseudogroups with the NTD-RBD mutation positions ")
+            #print("Cross reactivity countdown", a, "out of %d epitope clases"%len(Ab_classes))
+            if ab!= "NTD":
+                Cross_Lin, Missed, Greater_one = cross_reactivity((Top_Pseudo, Top_Pseudo), 
+                                                                      Escape_Fraction, 
+                                                                      [ab],
+                                                                      mut_x_sites_dic_used,
+                                                                      AA_change_dic = AA_change_dic_updated,
+                                                                      joblib=True)
+                
+                FRxy_ab = Cross_Lin[ab]
+                Cross_react_dic[ab] = FRxy_ab.copy()
+                Cross_react_dic_wght[ab] = FRxy_ab*((mean_IC50_per_group["IC50"].values[mean_IC50_per_group["group"] == ab])[0])
+            a +=1
+        
+        Cross_react_dic["variant_list"] = list(Top_Pseudo)
+        Cross_react_dic_wght["variant_list"] = list(Top_Pseudo)
+        
+        
+        """Add FR to NTD-targeting AB assuming a FR of 10 to each mutations sites included in NTD Antigenic supersite"""   
+        n = len(Cross_react_dic["variant_list"])
+        FR_NTD = np.ones((n, n))
+        mut_profiles = []
+        for i in range(n):
+            var_1 = Cross_react_dic["variant_list"][i]
+            if len(list(AA_change_dic_updated[var_1].keys())) > 0:
+                var_1_profiles = np.concatenate(tuple([AA_change_dic_updated[var_1][m1] for m1 in list(AA_change_dic_updated[var_1].keys())]))
+                mut_profiles.append("/".join(sorted(var_1_profiles)))
+            else:
+                mut_profiles.append("")
+                
+            for j in range(n):
+                if i > j:
+                    var_2 = Cross_react_dic["variant_list"][j]
+                    
+                    sites = get_pos(var_1, var_2, AA_change_dic_updated, AA_change_dic_updated, mut_x_sites_dic_updated, mut_x_sites_dic_updated)
+                    
+                    FR_sites = 1
+                    pos_done = []
+                    for s in sites:
+                        s = int(s)
+                        if ((14<=s)&(s<=20)) or ((140<=s)&(s<=158)) or ((245<=s)&(s<=264)):
+                            if s not in pos_done:
+                                FR_sites *= 10
+                                pos_done.append(s)
+    
+                                
+                    FR_NTD[i, j] = FR_sites
+                    FR_NTD[j, i] = FR_sites
+        
+            
+        Cross_react_dic["NTD"] = FR_NTD.copy()
+        Cross_react_dic["Mutations"] = {"mut_profiles":mut_profiles, "positions":mut_x_sites_dic_updated, "AA_changes":AA_change_dic_updated}
+    
+        Cross_react_dic_wght["NTD"] = FR_NTD.copy()
+        Cross_react_dic_wght["Mutations"] = {"mut_profiles":mut_profiles, "positions":mut_x_sites_dic_updated, "AA_changes":AA_change_dic_updated}
+    
+        file0 = open(result_location, "wb") 
+        pickle.dump(Cross_react_dic, file0)
+        file0.close()
+    
+        file1 = open(str(result_location)[:-4]+"_weighted.pck", "wb") 
+        pickle.dump(Cross_react_dic_wght, file1)
+        file1.close()  
+        #enablePrint()
