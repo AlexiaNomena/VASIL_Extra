@@ -1,0 +1,25 @@
+name: VASIL
+channels:
+  - anaconda
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - python
+  - numpy
+  - scipy
+  - openpyxl
+  - pandas
+  - matplotlib
+  - seaborn
+  - joblib
+  - regex
+  - pip
+  - pyOpenSSL
+  - patsy
+  - scikit-learn
+  - mpl_axes_aligner
+  - pip:
+    - voila
+    - ipywidgets
+    - widgetsnbextension
