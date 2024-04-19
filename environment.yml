@@ -1,8 +1,5 @@
 name: VASIL
 channels:
-  - anaconda
-  - conda-forge
-  - bioconda
   - defaults
 dependencies:
   - python
