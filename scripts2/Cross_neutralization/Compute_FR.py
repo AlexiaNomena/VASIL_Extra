@@ -554,7 +554,7 @@ if Lin_name not in ("ALL", "FR_DMS_sites", "missing", "only_delta"):
                         for mut in mut_lin0:
                             if "\n" in mut:
                                 mut = mut.replace("\n","")
-                            if mut[:3] not in ("DEL", "del"):
+                            if mut[:3] not in ("Ignore"):
                                 if len(re.findall(r'\d+', mut))>0:
                                     pos0 = re.findall(r'\d+', mut)
                                     if len(pos0) == 1:

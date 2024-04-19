@@ -290,7 +290,7 @@ def Compute_FR_major(SpikeGroupsFile = None, MutProfiles = None,
                 if "\n" in mut:
                     mut = mut.replace("\n","")
                     
-                if mut[:3] not in ("DEL", "del"):
+                if mut[:3] not in ("Ignore"):
                     if len(re.findall(r'\d+', mut))>0:
                         pos0 = re.findall(r'\d+', mut)
                         if len(pos0) == 1:
@@ -345,7 +345,7 @@ def Compute_FR_major(SpikeGroupsFile = None, MutProfiles = None,
                     if "\n" in mut:
                         mut = mut.replace("\n","")
                         
-                    if mut[:3] not in ("DEL", "del"):
+                    if mut[:3] not in ("Ignore"):
                         pos0 = re.findall(r'\d+', mut)
                         if len(pos0) == 1:
                             pos = str(pos0[0])
