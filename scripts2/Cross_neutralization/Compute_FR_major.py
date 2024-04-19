@@ -448,6 +448,5 @@ def Compute_FR_major(SpikeGroupsFile = None, MutProfiles = None,
     
         file1 = open(str(result_location)[:-4]+"_weighted.pck", "wb") 
         pickle.dump(Cross_react_dic_wght, file1)
-        file1.close()
-        print("TEST UPDATE")  
+        file1.close() 
         #enablePrint()
