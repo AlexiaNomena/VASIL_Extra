@@ -398,6 +398,7 @@ def Compute_FR_major(SpikeGroupsFile = None, MutProfiles = None,
                 FRxy_ab = Cross_Lin[ab]
                 Cross_react_dic[ab] = FRxy_ab.copy()
                 Cross_react_dic_wght[ab] = FRxy_ab*((mean_IC50_per_group["IC50"].values[mean_IC50_per_group["group"] == ab])[0])
+                
             a +=1
         
         Cross_react_dic["variant_list"] = list(Top_Pseudo)

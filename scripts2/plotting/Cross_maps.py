@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 from matplotlib.backends.backend_pdf import PdfPages
 import matplotlib.pyplot as plt
+import pandas as pd
 import matplotlib
 import numpy as np
 import pickle
@@ -167,6 +168,7 @@ def Cross_maps(filename, special_lin=None, cross_special_lin = None, result_loca
             #Cross_sub[Cross_sub>=FR_vals_sub[-1]] = FR_vals_sub[-1]
             
             ### Put mask only after setting colorbar limits ####
+            Cross_sub_0 = Cross_sub.copy()
             Cross_sub = ma.array(Cross_sub, mask = mask_triup)
         
             Cross_Epitope_Dic["Resistance to %s"%ab] = Cross_sub
@@ -215,7 +217,11 @@ def Cross_maps(filename, special_lin=None, cross_special_lin = None, result_loca
                             center = center,
                             linewidths = 3,
                             linecolor = "white")
-                
+            
+            ### Save .csv 
+            df_ab = pd.DataFrame({Pseudo_lab_cross[i]:Cross_sub_0[:, i] for i in range(len(Pseudo_lab_cross))}, index = Pseudo_lab_cross)
+            df_ab.to_csv(result_location+"/Cross_React_AB_%s.csv"%ab)
+            
             cbar = cMap.figure.axes[-1] # get colorbar instance
             cbar.yaxis.label.set_size(cbar_labsize)
                         
@@ -345,6 +351,7 @@ def Cross_maps(filename, special_lin=None, cross_special_lin = None, result_loca
             #Cross_sub[Cross_sub>=FR_vals_sub[-1]] = FR_vals_sub[-1]
             
             ### Put mask only after setting colorbar limits ####
+            Cross_sub_0 = Cross_sub.copy()
             Cross_sub = ma.array(Cross_sub, mask = mask_triup)
     
             Cross_Dic["Resistance to %s"%ab] = Cross_sub
@@ -390,6 +397,10 @@ def Cross_maps(filename, special_lin=None, cross_special_lin = None, result_loca
                             linewidths = 3,
                             linecolor = "white")
                 
+            ### Save .csv 
+            df_ab = pd.DataFrame({Pseudo_lab_cross[i]:Cross_sub_0[:, i] for i in range(len(Pseudo_lab_cross))}, index = Pseudo_lab_cross)
+            df_ab.to_csv(result_location+"/major_Cross_React_AB_%s.csv"%ab)
+            
             cbar = cMap.figure.axes[-1] # get colorbar instance
             cbar.yaxis.label.set_size(cbar_labsize)
             cbar.tick_params(labelsize = cbar_labsize)
@@ -518,6 +529,7 @@ def Cross_maps(filename, special_lin=None, cross_special_lin = None, result_loca
                 #Cross_sub[Cross_sub>=FR_vals_sub[-1]] = FR_vals_sub[-1]
                 
                 ### Put mask only after setting colorbar limits ####
+                Cross_sub_0 = Cross_sub.copy()
                 Cross_sub = ma.array(Cross_sub, mask = mask_triup)
     
                 Cross_Dic["Resistance to %s"%ab] = Cross_sub
