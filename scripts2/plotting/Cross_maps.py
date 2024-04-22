@@ -195,7 +195,7 @@ def Cross_maps(filename, special_lin=None, cross_special_lin = None, result_loca
                             cbar = True, 
                             annot = True, 
                             #annot = False,
-                            annot_kws = {"size": 44*u},
+                            annot_kws = {"size": 55*u, "weight":"bold"},
                             fmt = ".2f", ## annotations decimals
                             cbar_kws = {'label': 'FR (log 10)',"shrink": 0.75, "ticks":FR_vals_sub}, 
                             center = center,
@@ -209,7 +209,7 @@ def Cross_maps(filename, special_lin=None, cross_special_lin = None, result_loca
                             cbar = True, 
                             annot = True, 
                             #annot = False,
-                            annot_kws = {"size": 44*u},
+                            annot_kws = {"size": 55*u, "weight":"bold"},
                             fmt = ".2f", ## annotations decimals
                             cbar_kws = {'label': 'FR (log 10)',"shrink": 0.75, "ticks":FR_vals_sub}, 
                             center = center,
@@ -369,7 +369,7 @@ def Cross_maps(filename, special_lin=None, cross_special_lin = None, result_loca
                             cbar = False, 
                             annot = True, 
                             #annot = False,
-                            annot_kws = {"size": 44*u},
+                            annot_kws = {"size": 55*u, "weight":"bold"},
                             fmt = ".2f", ## annotations decimals
                             #cbar_kws = {'label': 'FR (log 10)',"shrink": 0.75, "ticks":FR_vals_sub}, 
                             center = center,
@@ -383,7 +383,7 @@ def Cross_maps(filename, special_lin=None, cross_special_lin = None, result_loca
                             cbar = False, 
                             annot = True, 
                             #annot = False,
-                            annot_kws = {"size": 44*u},
+                            annot_kws = {"size": 55*u, "weight":"bold"},
                             fmt = ".2f", ## annotations decimals
                             cbar_kws = {'label': 'FR (log 10)',"shrink": 0.75, "ticks":FR_vals_sub}, 
                             center = center,
@@ -542,7 +542,7 @@ def Cross_maps(filename, special_lin=None, cross_special_lin = None, result_loca
                                 cbar = True, 
                                 annot = True, 
                                 #annot = False,
-                                annot_kws = {"size": 44*u},
+                                annot_kws = {"size": 55*u, "weight":"bold"},
                                 fmt = ".2f", ## annotations decimals
                                 cbar_kws = {'label': 'FR (log 10)',"shrink": 0.75, "ticks":FR_vals_sub}, 
                                 center = center,
@@ -556,7 +556,7 @@ def Cross_maps(filename, special_lin=None, cross_special_lin = None, result_loca
                                 cbar = True, 
                                 annot = True, 
                                 #annot = False,
-                                annot_kws = {"size": 44*u},
+                                annot_kws = {"size": 55*u, "weight":"bold"},
                                 fmt = ".2f", ## annotations decimals
                                 cbar_kws = {'label': 'FR (log 10)',"shrink": 0.75, "ticks":FR_vals_sub}, 
                                 center = center,
