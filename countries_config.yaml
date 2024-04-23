@@ -1,0 +1,71 @@
+countries:  ["Germany", "USA", "UK", "Australia", "Brazil", "Canada", "Sweden", "France", "Denmark", "Mexico", "Japan", "SouthAfrica"]
+countries_dir:  ["ByCountry/Germany", "ByCountry/USA", "ByCountry/UK", "ByCountry/Australia", "ByCountry/Brazil", "ByCountry/Canada", "ByCountry/Sweden", "ByCountry/France", "ByCountry/Denmark", "ByCountry/Mexico", "ByCountry/Japan", "ByCountry/SouthAfrica"]
+countries_labels: ["Germany", "USA", "UK", "Australia", "Brazil", "Canada", "Sweden", "France", "Denmark", "Mexico", "Japan", "SouthAfrica"]
+color_per_country: ["0.976/0.275/0.373","0.729/0.027/0.322", "0.447/0.75/0.188", "0.08/0.592/0.729", "0.227/0.812/0.698", "0.463/0.761/0.831", "0.129/0.322/0.706", "0.722/0.247/0.824", "pink", "orange", "0.969/0.824/0.60", "0.831/0.522/0.416"]
+# Weight threshold spikes-group proportions for predictions
+weight_prop: 0.01 ### see config_plots parameters
+res_dir: "Compared_Countries"
+
+
+# variants to assess per country
+#main_country: "Germany"
+#lineages: ["BA.2.12.1", "JN.1", "BE.10", "EG.5.ALL"] 
+# dates start and end plots per variants
+#date_start: ["2022-04-09", "2022-04-26", "2022-08-10", "2023-03-31"]
+#date_end: ["2022-08-21", "2023-04-15", "2023-12-31", "2023-12-31"]
+
+#main_country: "USA"
+#lineages: ["HV.1", "FE.1", "FE.1.1/FE.1.2", "GK.1/GK.1.1/GK1.8", "D.1", "JD.1.1", "JD.1.1.1", "JN.1/JN.1.1", "BE.10"] 
+# dates start and end plots per variants
+#date_start: ["2023-09-01", "2022-12-15", "2023-02-09", "2023-03-28", "2023-07-18", "2023-07-18", "2023-07-18", "2023-09-18", "2022-01-10"]
+#date_end: ["2023-12-31"]
+
+#main_country: "France"
+#lineages: ["HV.1", "FE.1", "FE.1.1/FE.1.2", "GK.1/GK.1.1/GK1.8", "D.1", "JD.1.1", "JD.1.1.1", "JN.1/JN.1.1", "BE.10"] 
+# dates start and end plots per variants
+#date_start: ["2023-09-01", "2022-12-15", "2023-02-09", "2023-03-28", "2023-07-18", "2023-07-18", "2023-07-18", "2023-09-18", "2022-01-10"]
+#date_end: ["2023-12-31"]
+
+#main_country: "UK"
+#lineages: ["JN.1.ALL/BA.2.86", "EG.5.1.1/HV.1", "JG.3/JN.2", "HV.1/JD.1.ALL", "XBB.1.5.ALL/EK.1.ALL","EK.2.ALL/EK.3.ALL/EK.4", "EG.5.ALL", "XBB.1.16.ALL/FU.1.ALL/FU.2.ALL"] 
+# dates start and end plots per variants
+#date_start: ["2023-09-01"]
+#date_end: ["2023-12-31"]
+
+#main_country: "Brazil"
+#lineages: ["FE.1/FE.1.1/FE.1.2", "GK.1/GK.1.1/GK1.8", "D.1/JD.1.1/JD.1.1.1", "JN.1/JN.1.1", "BE.10"] 
+# dates start and end plots per variants
+#date_start: ["2022-12-15", "2023-03-28", "2023-07-18", "2023-07-27", "2022-04-26"]
+#date_end: ["2023-12-31"]
+
+#main_country: "Brazil"
+#lineages: ["FE.1", "FE.1.1", "FE.1.2", "GK.1/GK.1.1/GK1.8", "D.1", "JD.1.1", "JD.1.1.1", "JN.1/JN.1.1", "BE.10"] 
+# dates start and end plots per variants
+#date_start: ["2022-12-15", "2022-12-15", "2022-12-15", "2023-03-28", "2023-07-18", "2023-07-18", "2023-07-18", "2023-07-27", "2022-04-26"]
+#date_end: ["2023-12-31"]
+
+#main_country: "Canada"
+#lineages: ["JN.1.ALL/BA.2.86", "EG.5.1.1/HV.1/HK.3", "JF.ALL", "JG.3.ALL/JN.2", "HV.1/JD.1.ALL", "XBB.1.5.ALL/EK.1.ALL","EK.2.ALL/EK.3.ALL/EK.4", "EG.5.ALL", "XBB.1.16.ALL/FU.1.ALL/FU.2.ALL"] 
+# dates start and end plots per variants
+#date_start: ["2023-02-15"]
+#date_end: ["2023-11-31"]
+
+
+#main_country: "Sweden"
+#lineages: ["JN.1.ALL/BA.2.86", "EG.5.1.1/HV.1/HK.3", "JF.ALL", "JG.3.ALL/JN.2", "HV.1/JD.1.ALL", "XBB.1.5.ALL/EK.1.ALL","EK.2.ALL/EK.3.ALL/EK.4", "EG.5.ALL", "XBB.1.16.ALL/FU.1.ALL/FU.2.ALL"] 
+# dates start and end plots per variants
+#date_start: ["2023-02-15"]
+#date_end: ["2023-11-31"]
+
+#main_country: "Australia"
+#lineages: ["BF", "XBB.1.5/XBF", "JN.1.ALL/BA.2.86", "EG.5.1.1/HV.1/HK.3", "JF.ALL", "JG.3.ALL/JN.2", "HV.1/JD.1.ALL", "XBB.1.5.ALL/EK.1.ALL","EK.2.ALL/EK.3.ALL/EK.4", "EG.5.ALL", "XBB.1.16.ALL/FU.1.ALL/FU.2.ALL"] 
+# dates start and end plots per variants
+#date_start: ["2023-02-15"]
+#date_end: ["2023-11-31"]
+
+#main_country: "SouthAfrica"
+#lineages: ["JN.1.ALL/BA.2.86", "EG.5.1.1/HV.1/HK.3", "JF.ALL", "JG.3.ALL/JN.2", "HV.1/JD.1.ALL", "XBB.1.5.ALL/EK.1.ALL","EK.2.ALL/EK.3.ALL/EK.4", "EG.5.ALL", "XBB.1.16.ALL/FU.1.ALL/FU.2.ALL"] 
+# dates start and end plots per variants
+#date_start: ["2023-02-15"]
+#date_end: ["2023-11-31"]
+
