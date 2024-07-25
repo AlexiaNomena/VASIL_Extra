@@ -8,14 +8,11 @@ report: "report/workflow.rst"
 rule_all_common = ["vaccination/Timeline/Vaccination_Timeline.csv"]
 rule_all_common.append("vaccination/Timeline/Vaccination_Total.csv"),
 rule_all_common.append("vaccination/Cross_Vacc/cross_status.csv"),
-rule_all_common.append(
-    "vaccination/Immunological_Landscape_Vacc_vs_ALL/simulation_status.csv"
-),
+
 
 if not os.path.exists("results/Cross_with_delta_valitation.pck"):
     rule_all_common.append("results/Cross_with_delta_valitation.pck")
 
-rule_all_common.append("vaccination/ImL_ALL_vs_Vacc_ver1/simulation_status_ALL.csv")
 rule_all_common.append("vaccination/ImL_ALL_vs_Vacc_ver2/simulation_status_ALL.csv")
 
 if config["all_il"]:
@@ -29,7 +26,6 @@ if config["all_il"]:
     "vaccination/Susceptible_weighted_mean_over_spikegroups_all_PK.csv"
     ),
 
-rule_all_common.append("vaccination/plots/ALL_vs_Vacc_ver1/Susceptible_Trends_ALL_vs_Vacc.pdf"),
 rule_all_common.append("vaccination/plots/ALL_vs_Vacc_ver2/Susceptible_Trends_ALL_vs_Vacc.pdf"),
 
 rule all:
@@ -86,54 +82,6 @@ rule get_cross_vaccs:
     shell:
         "python {workflow.basedir}/scripts/Cross_neutralization/Compute_FR.py {input.spikes_dic} {input.mutations_dic} {input.dms_data_regrouped} {params.len_groups} {input.lineage_focus} {params.mutation_focus} {params.cross_delta} {output.cross_spkdir}"
 
-
-rule get_il_vacc_vs_all:
-    input:
-        cases="vaccination/Timeline/Vaccination_Total.csv",
-        cross_delta="results/Cross_with_delta_valitation.pck",
-        cross_spk_dir="vaccination/Cross_Vacc",
-        spikes_dic="results/SpikeGroups.pck",
-        spikes_freqs="results/Daily_SpikeGroups_Freq.csv",
-        dms_data_regrouped="results/epitope_data/dms_per_ab_per_site.csv",
-        VE_delta=config["VE_delta"],
-        lineage_focus="vaccination/Timeline/Vaccination_Timeline.csv",
-    params:
-        total_pop=config["total_population"],
-        date_start=config["date_start_vacc"],
-        date_end=config["date_end_vacc"],
-        save_neut=False,
-        antigen="none",
-        num_antigen=1,
-        cases_column="vaccinated",
-    output:
-        resultdir=directory("vaccination/Immunological_Landscape_Vacc_vs_ALL"),
-        results_done="vaccination/Immunological_Landscape_Vacc_vs_ALL/simulation_status.csv",
-    shell:
-        "python {workflow.basedir}/scripts/Expected_immunized/Expected_immunized.py {input.cases} {input.cross_delta} {input.cross_spk_dir} {input.spikes_dic} {input.spikes_freqs} {input.dms_data_regrouped} {input.VE_delta} {params.total_pop} {params.date_start} {params.date_end} {output.resultdir} {params.save_neut} {input.lineage_focus} {params.num_antigen} {params.antigen} {params.cases_column}"
-
-rule get_il_all_vs_vacc_ver1:
-    input:
-        cases="vaccination/Timeline/Vaccination_Total.csv",
-        cross_delta="results/Cross_with_delta_valitation.pck",
-        cross_spk="results/Cross_react_dic_spikegroups_ALL.pck",
-        spikes_dic="results/SpikeGroups.pck",
-        spikes_freqs="vaccination/Timeline/Vaccination_Timeline.csv",
-        dms_data_regrouped="results/epitope_data/dms_per_ab_per_site.csv",
-        VE_delta=config["VE_delta"],
-    params:
-        total_pop=config["total_population"],
-        date_start=config["date_start"],
-        date_end=config["date_end"],
-        lineage_focus="ALL_vs_Vacc_ver1",
-        save_neut=False,
-        antigen="none",
-        num_antigen=1,
-        cases_column="vaccinated",
-    output:
-        resultdir=directory("vaccination/ImL_ALL_vs_Vacc_ver1"),
-        results_done="vaccination/ImL_ALL_vs_Vacc_ver1/simulation_status_ALL.csv",
-    shell:
-        "python {workflow.basedir}/scripts/Expected_immunized/Expected_immunized.py {input.cases} {input.cross_delta} {input.cross_spk} {input.spikes_dic} {input.spikes_freqs} {input.dms_data_regrouped} {input.VE_delta} {params.total_pop} {params.date_start} {params.date_end} {output.resultdir} {params.save_neut} {params.lineage_focus} {params.num_antigen} {params.antigen} {params.cases_column}"
 
 rule get_il_all_vs_vacc_ver2:
     input:
@@ -234,23 +182,6 @@ rule get_susceptible_weighted_mean:
         "python {workflow.basedir}/scripts/plotting/Susceptible_weighted_mean.py {input.spikes_dic} {input.spikes_freqs} {params.threshold} {params.total_pop} {params.res_dir}"
 
 
-try:
-    os.remove("vaccination/Susceptible_weighted_mean_over_spikegroups_vs_Vacc_ver1_all_PK.csv")
-except:
-    pass
-    
-rule get_susceptible_weighted_mean_vs_vacc_ver1:
-    input:
-        spikes_dic="results/SpikeGroups.pck",
-        spikes_freqs="results/Daily_SpikeGroups_Freq.csv",
-    params:
-        threshold=config["weight_prop"],
-        total_pop=config["total_population"],
-        res_dir="vaccination_special_ver1",
-    output:
-        mean_trend="vaccination/Susceptible_weighted_mean_over_spikegroups_vs_Vacc_ver1_all_PK.csv",
-    shell:
-        "python {workflow.basedir}/scripts/plotting/Susceptible_weighted_mean.py {input.spikes_dic} {input.spikes_freqs} {params.threshold} {params.total_pop} {params.res_dir}"
 
 try:
     os.remove("vaccination/Susceptible_weighted_mean_over_spikegroups_vs_Vacc_ver2_all_PK.csv")
@@ -270,34 +201,16 @@ rule get_susceptible_weighted_mean_vs_vacc_ver2:
     shell:
         "python {workflow.basedir}/scripts/plotting/Susceptible_weighted_mean.py {input.spikes_dic} {input.spikes_freqs} {params.threshold} {params.total_pop} {params.res_dir}"
 
-rule compare_trends_ver1:
-    input:
-        mean_trends_1="vaccination/Susceptible_weighted_mean_over_spikegroups_all_PK.csv",
-        mean_trends_2="vaccination/Susceptible_weighted_mean_over_spikegroups_vs_Vacc_ver1_all_PK.csv",
-        vacc_infos="vaccination/Timeline/Vaccination_Timeline.csv",
-        S_vacc_dir1="vaccination/Immunological_Landscape_Vacc_vs_ALL",
-        S_vacc_dir2="vaccination/ImL_ALL_vs_Vacc_ver1",
-        spikes_dic="results/SpikeGroups.pck",
-    params:
-        total_pop=config["total_population"],
-        date_start=config["date_start_plots"],
-        date_end=config["date_end_plots"],
-    output:
-        dir=directory("vaccination/plots/ALL_vs_Vacc_ver1"),
-        res="vaccination/plots/ALL_vs_Vacc_ver1/Susceptible_Trends_ALL_vs_Vacc.pdf",
-    shell:
-        "python {workflow.basedir}/scripts/vaccination/compare_vacc_to_infections.py {input.mean_trends_1} {input.mean_trends_2} {input.vacc_infos} {input.S_vacc_dir1} {input.S_vacc_dir2} {input.spikes_dic} {params.total_pop} {params.date_start} {params.date_end} {output.dir}"
-
 
 rule compare_trends_ver2:
     input:
         mean_trends_1="vaccination/Susceptible_weighted_mean_over_spikegroups_all_PK.csv",
         mean_trends_2="vaccination/Susceptible_weighted_mean_over_spikegroups_vs_Vacc_ver2_all_PK.csv",
         vacc_infos="vaccination/Timeline/Vaccination_Timeline.csv",
-        S_vacc_dir1="vaccination/Immunological_Landscape_Vacc_vs_ALL",
-        S_vacc_dir2="vaccination/ImL_ALL_vs_Vacc_ver2",
         spikes_dic="results/SpikeGroups.pck",
     params:
+        S_vacc_dir1="obsolete",
+        S_vacc_dir2="obsolete",
         total_pop=config["total_population"],
         date_start=config["date_start_plots"],
         date_end=config["date_end_plots"],
@@ -305,4 +218,4 @@ rule compare_trends_ver2:
         dir=directory("vaccination/plots/ALL_vs_Vacc_ver2"),
         res="vaccination/plots/ALL_vs_Vacc_ver2/Susceptible_Trends_ALL_vs_Vacc.pdf",
     shell:
-        "python {workflow.basedir}/scripts/vaccination/compare_vacc_to_infections.py {input.mean_trends_1} {input.mean_trends_2} {input.vacc_infos} {input.S_vacc_dir1} {input.S_vacc_dir2} {input.spikes_dic} {params.total_pop} {params.date_start} {params.date_end} {output.dir}"
+        "python {workflow.basedir}/scripts/vaccination/compare_vacc_to_infections.py {input.mean_trends_1} {input.mean_trends_2} {input.vacc_infos} {params.S_vacc_dir1} {params.S_vacc_dir2} {input.spikes_dic} {params.total_pop} {params.date_start} {params.date_end} {output.dir}"
