@@ -1,0 +1,65 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 8
+Rules claiming more threads will be scaled down.
+Job stats:
+job                                           count
+------------------------------------------  -------
+all                                               1
+compare_trends_ver2                               1
+get_susceptible_weighted_mean                     1
+get_susceptible_weighted_mean_vs_vacc_ver2        1
+total                                             4
+
+Select jobs to execute...
+Failed to solve scheduling problem with ILP solver. Falling back to greedy solver. Run Snakemake with --verbose to see the full solver output for debugging the problem.
+
+[Thu Jul 25 20:01:47 2024]
+rule get_susceptible_weighted_mean_vs_vacc_ver2:
+    input: results/SpikeGroups.pck, results/Daily_SpikeGroups_Freq.csv
+    output: vaccination/Susceptible_weighted_mean_over_spikegroups_vs_Vacc_ver2_all_PK.csv
+    jobid: 7
+    reason: Missing output files: vaccination/Susceptible_weighted_mean_over_spikegroups_vs_Vacc_ver2_all_PK.csv
+    resources: tmpdir=/var/folders/fn/52prq_116p11kl8vxdls_qth0000gn/T
+
+
+[Thu Jul 25 20:01:47 2024]
+rule get_susceptible_weighted_mean:
+    input: results/SpikeGroups.pck, results/Daily_SpikeGroups_Freq.csv
+    output: vaccination/Susceptible_weighted_mean_over_spikegroups_all_PK.csv
+    jobid: 5
+    reason: Missing output files: vaccination/Susceptible_weighted_mean_over_spikegroups_all_PK.csv
+    resources: tmpdir=/var/folders/fn/52prq_116p11kl8vxdls_qth0000gn/T
+
+[Thu Jul 25 20:01:48 2024]
+Finished job 5.
+1 of 4 steps (25%) done
+[Thu Jul 25 20:01:48 2024]
+Finished job 7.
+2 of 4 steps (50%) done
+Select jobs to execute...
+
+[Thu Jul 25 20:01:48 2024]
+rule compare_trends_ver2:
+    input: vaccination/Susceptible_weighted_mean_over_spikegroups_all_PK.csv, vaccination/Susceptible_weighted_mean_over_spikegroups_vs_Vacc_ver2_all_PK.csv, vaccination/Timeline/Vaccination_Timeline.csv, results/SpikeGroups.pck
+    output: vaccination/plots/ALL_vs_Vacc_ver2, vaccination/plots/ALL_vs_Vacc_ver2/Susceptible_Trends_ALL_vs_Vacc.pdf
+    jobid: 6
+    reason: Missing output files: vaccination/plots/ALL_vs_Vacc_ver2/Susceptible_Trends_ALL_vs_Vacc.pdf; Input files updated by another job: vaccination/Susceptible_weighted_mean_over_spikegroups_all_PK.csv, vaccination/Susceptible_weighted_mean_over_spikegroups_vs_Vacc_ver2_all_PK.csv
+    resources: tmpdir=/var/folders/fn/52prq_116p11kl8vxdls_qth0000gn/T
+
+[Thu Jul 25 20:01:49 2024]
+Finished job 6.
+3 of 4 steps (75%) done
+Select jobs to execute...
+
+[Thu Jul 25 20:01:49 2024]
+localrule all:
+    input: vaccination/Timeline/Vaccination_Timeline.csv, vaccination/Timeline/Vaccination_Total.csv, vaccination/Cross_Vacc/cross_status.csv, vaccination/ImL_ALL_vs_Vacc_ver2/simulation_status_ALL.csv, vaccination/Immunological_Landscape_ALL/simulation_status_ALL.csv, vaccination/Susceptible_weighted_mean_over_spikegroups_all_PK.csv, vaccination/plots/ALL_vs_Vacc_ver2/Susceptible_Trends_ALL_vs_Vacc.pdf
+    jobid: 0
+    reason: Input files updated by another job: vaccination/Susceptible_weighted_mean_over_spikegroups_all_PK.csv, vaccination/plots/ALL_vs_Vacc_ver2/Susceptible_Trends_ALL_vs_Vacc.pdf
+    resources: tmpdir=/var/folders/fn/52prq_116p11kl8vxdls_qth0000gn/T
+
+[Thu Jul 25 20:01:49 2024]
+Finished job 0.
+4 of 4 steps (100%) done
+Complete log: .snakemake/log/2024-07-25T200147.253182.snakemake.log

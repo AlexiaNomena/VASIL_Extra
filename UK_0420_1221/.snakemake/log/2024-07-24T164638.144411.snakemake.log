@@ -1,0 +1,79 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 8
+Rules claiming more threads will be scaled down.
+Job stats:
+job                             count
+----------------------------  -------
+all                                 1
+compute_cross_delta                 1
+get_lineages_frequencies            1
+get_mutation_and_spikegroups        1
+get_spikegroups_frequencies         1
+total                               5
+
+Select jobs to execute...
+Failed to solve scheduling problem with ILP solver. Falling back to greedy solver. Run Snakemake with --verbose to see the full solver output for debugging the problem.
+
+[Wed Jul 24 16:46:38 2024]
+rule get_mutation_and_spikegroups:
+    input: all_GISAID_covSonar_samples_UK_filteredDateFormat_rerevision_April2020_2021.tsv, results/epitope_data/dms_per_ab_per_site.csv
+    output: results/mutation_data, results/mutation_data/mutationprofile_RBD_NTD_mutations.csv, results/mutation_data/mutationprofile_RBD_NTD_pseudogroups.csv
+    jobid: 4
+    reason: Missing output files: results/mutation_data/mutationprofile_RBD_NTD_pseudogroups.csv, results/mutation_data/mutationprofile_RBD_NTD_mutations.csv
+    resources: tmpdir=/var/folders/fn/52prq_116p11kl8vxdls_qth0000gn/T
+
+
+[Wed Jul 24 16:46:38 2024]
+rule get_lineages_frequencies:
+    input: all_GISAID_covSonar_samples_UK_filteredDateFormat_rerevision_April2020_2021.tsv
+    output: results/Daily_Lineages_Freq_seq_thres_100.csv
+    jobid: 3
+    reason: Missing output files: results/Daily_Lineages_Freq_seq_thres_100.csv
+    resources: tmpdir=/var/folders/fn/52prq_116p11kl8vxdls_qth0000gn/T
+
+[Wed Jul 24 16:48:21 2024]
+Finished job 3.
+1 of 5 steps (20%) done
+[Wed Jul 24 16:51:58 2024]
+Finished job 4.
+2 of 5 steps (40%) done
+Select jobs to execute...
+
+[Wed Jul 24 16:51:58 2024]
+rule get_spikegroups_frequencies:
+    input: dumy_incidence_file_for_timerange.csv, results/Daily_Lineages_Freq_seq_thres_100.csv, results/mutation_data/mutationprofile_RBD_NTD_mutations.csv, results/mutation_data/mutationprofile_RBD_NTD_pseudogroups.csv
+    output: results/Daily_SpikeGroups_Freq.csv, results/SpikeGroups.pck, results/Mutation_Profiles.pck, results/Daily_Lineages_Freq_1_percent.csv
+    jobid: 2
+    reason: Missing output files: results/Daily_Lineages_Freq_1_percent.csv, results/Mutation_Profiles.pck, results/Daily_SpikeGroups_Freq.csv, results/SpikeGroups.pck; Input files updated by another job: results/Daily_Lineages_Freq_seq_thres_100.csv, results/mutation_data/mutationprofile_RBD_NTD_pseudogroups.csv, results/mutation_data/mutationprofile_RBD_NTD_mutations.csv
+    resources: tmpdir=/var/folders/fn/52prq_116p11kl8vxdls_qth0000gn/T
+
+[Wed Jul 24 16:52:29 2024]
+Finished job 2.
+3 of 5 steps (60%) done
+Select jobs to execute...
+
+[Wed Jul 24 16:52:29 2024]
+rule compute_cross_delta:
+    input: results/SpikeGroups.pck, results/Mutation_Profiles.pck, results/epitope_data/dms_per_ab_per_site.csv
+    output: results/Cross_with_delta_valitation.pck
+    jobid: 5
+    reason: Missing output files: results/Cross_with_delta_valitation.pck; Input files updated by another job: results/Mutation_Profiles.pck, results/SpikeGroups.pck
+    resources: tmpdir=/var/folders/fn/52prq_116p11kl8vxdls_qth0000gn/T
+
+[Wed Jul 24 16:52:30 2024]
+Finished job 5.
+4 of 5 steps (80%) done
+Select jobs to execute...
+
+[Wed Jul 24 16:52:30 2024]
+localrule all:
+    input: results/epitope_data/dms_per_ab_per_site.csv, results/Daily_SpikeGroups_Freq.csv, results/SpikeGroups.pck, results/Mutation_Profiles.pck, results/Cross_with_delta_valitation.pck, results/Daily_Lineages_Freq_seq_thres_100.csv, results/Daily_Lineages_Freq_1_percent.csv
+    jobid: 0
+    reason: Input files updated by another job: results/Daily_Lineages_Freq_seq_thres_100.csv, results/Daily_SpikeGroups_Freq.csv, results/Daily_Lineages_Freq_1_percent.csv, results/Mutation_Profiles.pck, results/Cross_with_delta_valitation.pck, results/SpikeGroups.pck
+    resources: tmpdir=/var/folders/fn/52prq_116p11kl8vxdls_qth0000gn/T
+
+[Wed Jul 24 16:52:30 2024]
+Finished job 0.
+5 of 5 steps (100%) done
+Complete log: .snakemake/log/2024-07-24T164638.144411.snakemake.log

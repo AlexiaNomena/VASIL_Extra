@@ -1,0 +1,37 @@
+Timeline of lineage proportions: 2020-02-03 -- 2021-12-31
+Python Output: Number of lineages:  961
+Python Output: Number of genomes:  1727713
+Consonar data does not have the column week_num of the calendar week
+[Thu Jul 25 11:37:24 2024]
+Finished job 3.
+2 of 6 steps (33%) done
+[1] "Timeframe of extracted mutation profiles 2020-02-03 to 2021-12-31"
+[1] "UNASSIGNED"
+factor(0)
+13811 Levels: E:*76X E:A22X E:A32X E:A36X E:A41X E:C40X E:C43X E:C44X ... S:del:87:1188
+[1] "Number of lineages in this dataset: 961"
+[1] "Number of mutations in the spike protein for all given lineages: 953"
+[1] "Number of mutations in the NTD region of the spike for all given lineages: 72"
+[1] "Number of mutations in the RBD region of the spike for all given lineages: 224"
+[1] "Number of Spike-Pseudogroups found: 34"
+[1] "Number of individual lineages: 105"
+[1] "Number of lineages / Spike-pseudogroups found with >  100  genomes available in the dataset that are plotted as a heatmap: 28"
+null device 
+          1 
+null device 
+          1 
+[Thu Jul 25 11:41:18 2024]
+Finished job 4.
+3 of 6 steps (50%) done
+Select jobs to execute...
+
+[Thu Jul 25 11:41:18 2024]
+rule get_spikegroups_frequencies:
+    input: estimated_numer_of_infections_UK_April2020_2021.csv, results/Daily_Lineages_Freq_seq_thres_100.csv, results/mutation_data/mutationprofile_RBD_NTD_mutations.csv, results/mutation_data/mutationprofile_RBD_NTD_pseudogroups.csv
+    output: results/Daily_SpikeGroups_Freq.csv, results/SpikeGroups.pck, results/Mutation_Profiles.pck, results/Daily_Lineages_Freq_1_percent.csv
+    jobid: 2
+    reason: Missing output files: results/Daily_SpikeGroups_Freq.csv, results/Mutation_Profiles.pck, results/Daily_Lineages_Freq_1_percent.csv, results/SpikeGroups.pck; Input files updated by another job: results/mutation_data/mutationprofile_RBD_NTD_mutations.csv, results/Daily_Lineages_Freq_seq_thres_100.csv, results/mutation_data/mutationprofile_RBD_NTD_pseudogroups.csv; Set of input files has changed since last execution
+    resources: tmpdir=/var/folders/fn/52prq_116p11kl8vxdls_qth0000gn/T
+
+Python Output: Number of Spikegroups: 20 (above 1.0 % in some calendar day) + 1 Wuhan-Hu-1
+Python Output: Number of lineages composing Spikegroups (above 1.0 % in some calendar day): 804

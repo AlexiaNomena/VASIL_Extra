@@ -1,0 +1,107 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 8
+Rules claiming more threads will be scaled down.
+Job stats:
+job                                           count
+------------------------------------------  -------
+all                                               1
+compare_trends_ver2                               1
+get_Immunological_Landscape_all                   1
+get_cross_vaccs                                   1
+get_il_all_vs_vacc_ver2                           1
+get_susceptible_weighted_mean                     1
+get_susceptible_weighted_mean_vs_vacc_ver2        1
+get_vacc_infos                                    1
+total                                             8
+
+Select jobs to execute...
+Failed to solve scheduling problem with ILP solver. Falling back to greedy solver. Run Snakemake with --verbose to see the full solver output for debugging the problem.
+
+[Thu Jul 25 20:01:35 2024]
+rule get_il_all_vs_vacc_ver2:
+    input: estimated_numer_of_infections_UK_April2020_2021.csv, results/Cross_with_delta_valitation.pck, results/Cross_react_dic_spikegroups_ALL.pck, results/SpikeGroups.pck, results/Daily_SpikeGroups_Freq.csv, results/epitope_data/dms_per_ab_per_site.csv, Clinical_Delta_VE.xlsx
+    output: vaccination/ImL_ALL_vs_Vacc_ver2, vaccination/ImL_ALL_vs_Vacc_ver2/simulation_status_ALL.csv
+    jobid: 3
+    reason: Missing output files: vaccination/ImL_ALL_vs_Vacc_ver2/simulation_status_ALL.csv
+    resources: tmpdir=/var/folders/fn/52prq_116p11kl8vxdls_qth0000gn/T
+
+
+[Thu Jul 25 20:01:35 2024]
+rule get_susceptible_weighted_mean_vs_vacc_ver2:
+    input: results/SpikeGroups.pck, results/Daily_SpikeGroups_Freq.csv
+    output: vaccination/Susceptible_weighted_mean_over_spikegroups_vs_Vacc_ver2_all_PK.csv
+    jobid: 7
+    reason: Missing output files: vaccination/Susceptible_weighted_mean_over_spikegroups_vs_Vacc_ver2_all_PK.csv
+    resources: tmpdir=/var/folders/fn/52prq_116p11kl8vxdls_qth0000gn/T
+
+
+[Thu Jul 25 20:01:35 2024]
+rule get_susceptible_weighted_mean:
+    input: results/SpikeGroups.pck, results/Daily_SpikeGroups_Freq.csv
+    output: vaccination/Susceptible_weighted_mean_over_spikegroups_all_PK.csv
+    jobid: 5
+    reason: Missing output files: vaccination/Susceptible_weighted_mean_over_spikegroups_all_PK.csv
+    resources: tmpdir=/var/folders/fn/52prq_116p11kl8vxdls_qth0000gn/T
+
+
+[Thu Jul 25 20:01:35 2024]
+rule get_vacc_infos:
+    input: Vaccinations_UK_owid.csv
+    output: vaccination/Timeline, vaccination/Timeline/Vaccination_Timeline.csv, vaccination/Timeline/Vaccination_Total.csv
+    jobid: 1
+    reason: Missing output files: vaccination/Timeline/Vaccination_Total.csv, vaccination/Timeline/Vaccination_Timeline.csv
+    resources: tmpdir=/var/folders/fn/52prq_116p11kl8vxdls_qth0000gn/T
+
+
+[Thu Jul 25 20:01:35 2024]
+rule get_Immunological_Landscape_all:
+    input: estimated_numer_of_infections_UK_April2020_2021.csv, results/Cross_with_delta_valitation.pck, results/Cross_react_dic_spikegroups_ALL.pck, results/SpikeGroups.pck, results/Daily_SpikeGroups_Freq.csv, results/epitope_data/dms_per_ab_per_site.csv, Clinical_Delta_VE.xlsx
+    output: vaccination/Immunological_Landscape_ALL, vaccination/Immunological_Landscape_ALL/simulation_status_ALL.csv
+    jobid: 4
+    reason: Missing output files: vaccination/Immunological_Landscape_ALL/simulation_status_ALL.csv
+    resources: tmpdir=/var/folders/fn/52prq_116p11kl8vxdls_qth0000gn/T
+
+[Thu Jul 25 20:01:35 2024]
+Error in rule get_susceptible_weighted_mean:
+    jobid: 5
+    input: results/SpikeGroups.pck, results/Daily_SpikeGroups_Freq.csv
+    output: vaccination/Susceptible_weighted_mean_over_spikegroups_all_PK.csv
+    shell:
+        python /Users/raharinirina/Documents/Immune_Waning/VASIL_Extra/scripts/plotting/Susceptible_weighted_mean.py results/SpikeGroups.pck results/Daily_SpikeGroups_Freq.csv 0.01 113001291.0 vaccination
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+[Thu Jul 25 20:01:35 2024]
+Error in rule get_susceptible_weighted_mean_vs_vacc_ver2:
+    jobid: 7
+    input: results/SpikeGroups.pck, results/Daily_SpikeGroups_Freq.csv
+    output: vaccination/Susceptible_weighted_mean_over_spikegroups_vs_Vacc_ver2_all_PK.csv
+    shell:
+        python /Users/raharinirina/Documents/Immune_Waning/VASIL_Extra/scripts/plotting/Susceptible_weighted_mean.py results/SpikeGroups.pck results/Daily_SpikeGroups_Freq.csv 0.01 113001291.0 vaccination_special_ver2
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+[Thu Jul 25 20:01:35 2024]
+Finished job 1.
+1 of 8 steps (12%) done
+Select jobs to execute...
+
+[Thu Jul 25 20:01:35 2024]
+rule get_cross_vaccs:
+    input: results/SpikeGroups.pck, results/Mutation_Profiles.pck, results/epitope_data/dms_per_ab_per_site.csv, vaccination/Timeline/Vaccination_Timeline.csv
+    output: vaccination/Cross_Vacc, vaccination/Cross_Vacc/cross_status.csv
+    jobid: 2
+    reason: Missing output files: vaccination/Cross_Vacc/cross_status.csv; Input files updated by another job: vaccination/Timeline/Vaccination_Timeline.csv
+    resources: tmpdir=/var/folders/fn/52prq_116p11kl8vxdls_qth0000gn/T
+
+[Thu Jul 25 20:01:36 2024]
+Finished job 2.
+2 of 8 steps (25%) done
+[Thu Jul 25 20:01:42 2024]
+Finished job 4.
+3 of 8 steps (38%) done
+[Thu Jul 25 20:01:42 2024]
+Finished job 3.
+4 of 8 steps (50%) done
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: .snakemake/log/2024-07-25T200135.227957.snakemake.log

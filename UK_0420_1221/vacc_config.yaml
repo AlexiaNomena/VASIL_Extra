@@ -1,0 +1,23 @@
+# 1. Full path to vaccination data
+vacc_data: "Vaccinations_UK_owid.csv"
+vacc_considered: "people_fully_vaccinated/total_boosters" # but needs fixing the population size because infection + vaccination timeline sums up far above population size
+#### if you want only one vaccination type then remove the (/) and use only one e.g. people_fully_vaccinated (these must one of the columns in the Vaccinations_UK_owid.csv)
+date_start_vacc: "2021-01-10"
+date_end_vacc: "end"
+total_population: 113001291.0 #67030000 #UK population in 2021 World Bank but re-adjusted to infection+vaccination counts
+date_switch_vacc: "None" ### redundant parameter here, don't change
+# 2. Full path to Clinical VE data for delta variant (always needed for parameter estimation)
+VE_delta: "Clinical_Delta_VE.xlsx"
+# 3. Full path to GInPipe incidence data
+cases: "estimated_numer_of_infections_UK_April2020_2021.csv"
+cases_column: "est_number_of_infected" ## provide the data column name of the case ascertainment that you want to use
+all_il: TRUE # get all immunological landscapes (see main config parameters)
+cross_missing: FALSE # compute cross for missing spikegroups (see main config parameters)
+date_start: "2020-01-01" # start immunological landscape (see main config parameters)
+date_end: "2021-12-31" # end immunological landscape (see main config parameters)
+# Weight threshold spikes-group proportions for predictions
+weight_prop: 0.01 ### see config_plots parameters
+
+date_start_plots: "2021-01-10"
+date_end_plots: "2021-12-31"
+

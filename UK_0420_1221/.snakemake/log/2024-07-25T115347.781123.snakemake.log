@@ -1,0 +1,37 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 8
+Rules claiming more threads will be scaled down.
+Job stats:
+job                             count
+----------------------------  -------
+all                                 1
+get_cross_neutralization_all        1
+total                               2
+
+Select jobs to execute...
+
+[Thu Jul 25 11:53:48 2024]
+rule get_cross_neutralization_all:
+    input: results/SpikeGroups.pck, results/Mutation_Profiles.pck, results/epitope_data/dms_per_ab_per_site.csv
+    output: results/Cross_react_dic_spikegroups_ALL.pck
+    jobid: 6
+    reason: Missing output files: results/Cross_react_dic_spikegroups_ALL.pck
+    resources: tmpdir=/var/folders/fn/52prq_116p11kl8vxdls_qth0000gn/T
+
+[Thu Jul 25 11:55:46 2024]
+Finished job 6.
+1 of 2 steps (50%) done
+Select jobs to execute...
+
+[Thu Jul 25 11:55:46 2024]
+localrule all:
+    input: results/epitope_data/dms_per_ab_per_site.csv, results/Daily_SpikeGroups_Freq.csv, results/SpikeGroups.pck, results/Mutation_Profiles.pck, results/Cross_with_delta_valitation.pck, results/Daily_Lineages_Freq_seq_thres_100.csv, results/Daily_Lineages_Freq_1_percent.csv, results/Cross_react_dic_spikegroups_ALL.pck
+    jobid: 0
+    reason: Input files updated by another job: results/Cross_react_dic_spikegroups_ALL.pck
+    resources: tmpdir=/var/folders/fn/52prq_116p11kl8vxdls_qth0000gn/T
+
+[Thu Jul 25 11:55:46 2024]
+Finished job 0.
+2 of 2 steps (100%) done
+Complete log: .snakemake/log/2024-07-25T115347.781123.snakemake.log

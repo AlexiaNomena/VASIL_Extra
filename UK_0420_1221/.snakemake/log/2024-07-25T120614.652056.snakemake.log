@@ -1,0 +1,65 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 8
+Rules claiming more threads will be scaled down.
+Job stats:
+job                              count
+-----------------------------  -------
+all                                  1
+get_absolute_advantage               1
+get_relative_advantage_all           1
+get_susceptible_weighted_mean        1
+total                                4
+
+Select jobs to execute...
+
+[Thu Jul 25 12:06:14 2024]
+rule get_susceptible_weighted_mean:
+    input: results/SpikeGroups.pck, results/Daily_SpikeGroups_Freq.csv
+    output: results/Susceptible_weighted_mean_over_spikegroups_all_PK.csv
+    jobid: 1
+    reason: Missing output files: results/Susceptible_weighted_mean_over_spikegroups_all_PK.csv
+    resources: tmpdir=/var/folders/fn/52prq_116p11kl8vxdls_qth0000gn/T
+
+[Thu Jul 25 12:06:15 2024]
+Finished job 1.
+1 of 4 steps (25%) done
+Select jobs to execute...
+Failed to solve scheduling problem with ILP solver. Falling back to greedy solver. Run Snakemake with --verbose to see the full solver output for debugging the problem.
+
+[Thu Jul 25 12:06:15 2024]
+rule get_relative_advantage_all:
+    input: results/Immunological_Landscape_ALL, results/Daily_SpikeGroups_Freq.csv, results/Susceptible_weighted_mean_over_spikegroups_all_PK.csv
+    output: plots/relative_all, plots/relative_all/plot_status_all.csv
+    jobid: 5
+    reason: Missing output files: plots/relative_all/plot_status_all.csv; Input files updated by another job: results/Susceptible_weighted_mean_over_spikegroups_all_PK.csv
+    resources: tmpdir=/var/folders/fn/52prq_116p11kl8vxdls_qth0000gn/T
+
+
+[Thu Jul 25 12:06:16 2024]
+rule get_absolute_advantage:
+    input: estimated_numer_of_infections_UK_April2020_2021.csv, results/Susceptible_weighted_mean_over_spikegroups_all_PK.csv
+    output: plots/absolute, plots/absolute/absolute_estimate.pdf, plots/absolute/absolute_estimate.svg
+    jobid: 2
+    reason: Input files updated by another job: results/Susceptible_weighted_mean_over_spikegroups_all_PK.csv
+    resources: tmpdir=/var/folders/fn/52prq_116p11kl8vxdls_qth0000gn/T
+
+[Thu Jul 25 12:06:17 2024]
+Finished job 2.
+2 of 4 steps (50%) done
+[Thu Jul 25 12:06:21 2024]
+Finished job 5.
+3 of 4 steps (75%) done
+Select jobs to execute...
+
+[Thu Jul 25 12:06:21 2024]
+localrule all:
+    input: results/Susceptible_weighted_mean_over_spikegroups_all_PK.csv, plots/absolute/absolute_estimate.pdf, plots/absolute/absolute_estimate.svg, plots/Spikes_Props/SpikeGroups_Props_overview.pdf, plots/Cross_spikegroups/Cross_React_AB_A.pdf, plots/relative_all/plot_status_all.csv
+    jobid: 0
+    reason: Input files updated by another job: results/Susceptible_weighted_mean_over_spikegroups_all_PK.csv, plots/absolute/absolute_estimate.svg, plots/absolute/absolute_estimate.pdf, plots/relative_all/plot_status_all.csv
+    resources: tmpdir=/var/folders/fn/52prq_116p11kl8vxdls_qth0000gn/T
+
+[Thu Jul 25 12:06:21 2024]
+Finished job 0.
+4 of 4 steps (100%) done
+Complete log: .snakemake/log/2024-07-25T120614.652056.snakemake.log

@@ -1,0 +1,3 @@
+KeyError in file /Users/raharinirina/Documents/Immune_Waning/VASIL_Extra/VASIL, line 29:
+'freq_lin'
+  File "/Users/raharinirina/Documents/Immune_Waning/VASIL_Extra/VASIL", line 29, in <module>
