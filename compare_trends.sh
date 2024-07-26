@@ -1,0 +1,1 @@
+python scripts/plotting/compare_relative_fitness_spikegroups.py "UK_0120_1221/vaccination/new/UK_0120_1221/vaccination" "Immunological_Landscape_ALL/new/ImL_ALL_vs_Vacc_ver2" "Without_Vaccination/With_Vaccination" 0.01 "2022-03-01" "2023-04-15" 6 UK_0120_1221/Compared_to_vacc "A" "AP.1" "AY.4.2/AY.10" "B.1.617.1/B.1.351/B.1.177" "BA.1" "C.30" "green" "red"
