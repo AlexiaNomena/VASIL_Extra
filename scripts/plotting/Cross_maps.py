@@ -229,6 +229,7 @@ if plot_major not in ("True"):
         
         pdf = PdfPages(sys.argv[4]+"/Cross_React_AB_%s.pdf"%ab)
         pdf.savefig(fig_fr, bbox_inches = "tight")
+        plt.rcParams['svg.fonttype'] = 'none'
         fig_fr.savefig(sys.argv[4]+"/Cross_React_AB_%s.svg"%ab, bbox_inches = "tight")
         pdf.close()
  
@@ -402,6 +403,7 @@ else:
         
         pdf = PdfPages(sys.argv[4]+"/major_Cross_React_AB_%s.pdf"%ab)
         pdf.savefig(fig_fr, bbox_inches = "tight")
+        plt.rcParams['svg.fonttype'] = 'none'
         fig_fr.savefig(sys.argv[4]+"/major_Cross_React_AB_%s.svg"%ab, bbox_inches = "tight")
         pdf.close()
         
@@ -574,5 +576,6 @@ else:
             
             pdf = PdfPages(sys.argv[4]+"/major_Cross_React_AB_%s_weighted.pdf"%ab)
             pdf.savefig(fig_fr, bbox_inches = "tight")
+            plt.rcParams['svg.fonttype'] = 'none'
             fig_fr.savefig(sys.argv[4]+"/major_Cross_React_AB_%s_weighted.svg"%ab, bbox_inches = "tight")
             pdf.close()
