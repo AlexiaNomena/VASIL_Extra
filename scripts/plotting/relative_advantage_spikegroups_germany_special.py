@@ -535,7 +535,7 @@ def plot_fit(ES_df_dir, lineage_list, color_list, w_save = len(sys.argv)-1, alre
             pdf_k = PdfPages(sys.argv[w_save]+"/relative_fitness_%s_vs_prop.pdf"%(lab_k_fn))
             pdf_k.savefig(fig_k, bbox_inches = "tight")
             pdf_k.close()
-     
+            plt.rcParams['svg.fonttype'] = 'none'
             fig_k.savefig(sys.argv[w_save]+"/relative_fitness_%s_vs_prop.svg"%(lab_k_fn), bbox_inches = "tight")
             plt.close()
         
@@ -580,7 +580,7 @@ def plot_fit(ES_df_dir, lineage_list, color_list, w_save = len(sys.argv)-1, alre
             pdf_2 = PdfPages(sys.argv[w_save]+"/relative_fitness_%s.pdf"%lab_k_fn)
             pdf_2.savefig(fig2, bbox_inches = "tight")
             pdf_2.close()
-     
+            plt.rcParams['svg.fonttype'] = 'none'
             fig2.savefig(sys.argv[w_save]+"/relative_fitness_%s.svg"%lab_k_fn, bbox_inches = "tight")
             plt.close()
             
@@ -692,6 +692,7 @@ def plot_fit(ES_df_dir, lineage_list, color_list, w_save = len(sys.argv)-1, alre
     pdf = PdfPages(sys.argv[w_save]+"/relative_fitness_groups.pdf")
     pdf.savefig(fig, bbox_inches = "tight")
     pdf.close()
+    plt.rcParams['svg.fonttype'] = 'none'
     fig.savefig(sys.argv[w_save]+"/relative_fitness_groups.svg", bbox_inches = "tight")
     plt.close()
 
@@ -789,6 +790,7 @@ ax_prop.legend(loc = (1.2, 0.), fontsize = 20, ncols = np.ceil(len(lineage_list)
 pdf2 = PdfPages(sys.argv[w_save]+"/Groups_proportions.pdf")
 ax_prop.set_ylabel("Spikegroups Frequency (daily %)", fontsize = 20)
 pdf2.savefig(fig_prop, bbox_inches = "tight")
+plt.rcParams['svg.fonttype'] = 'none'
 fig_prop.savefig(sys.argv[w_save]+"/Groups_proportions.svg")
 pdf2.close()
 
