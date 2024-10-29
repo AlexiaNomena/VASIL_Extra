@@ -8,6 +8,7 @@ import pickle
 import sys
 import seaborn as sns
 import numpy.ma as ma
+import pandas as pd
 import pdb
 import os
 
@@ -400,6 +401,14 @@ else:
         
         cbar = ax_fr.collections[0].colorbar
         cbar.set_ticklabels(["%.1f"%FR_vals_sub[:-1][i] for i in range(len(FR_vals_sub[:-1]))]+["$\geq$"+" %.1f"%FR_vals_sub[-1]])
+        
+        daDic = {"variants":Pseudo_lab_cross}
+        Cross_sub_masked = ma.masked_array(Cross_sub, mask = mask_triup)
+        for x in range(len(Pseudo_lab_cross)):
+            daDic[Pseudo_lab_cross[x]] = (Cross_sub_masked.T)[x]
+        
+        df = pd.DataFrame(daDic)
+        df.to_excel(sys.argv[4]+"/Fig2C_%s.xlsx"%ab)
         
         pdf = PdfPages(sys.argv[4]+"/major_Cross_React_AB_%s.pdf"%ab)
         pdf.savefig(fig_fr, bbox_inches = "tight")

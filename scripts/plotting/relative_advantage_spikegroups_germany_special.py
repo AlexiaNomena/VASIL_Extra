@@ -92,6 +92,7 @@ def PreFig(xsize = 12, ysize = 12):
     matplotlib.rc('xtick', labelsize=xsize) 
     matplotlib.rc('ytick', labelsize=ysize)
 
+
 file = open("Spikegroups_membership.pck", "rb")
 Pseudogroup_dic = pickle.load(file)
 file.close()    
@@ -113,6 +114,8 @@ def plot_fit(ES_df_dir, lineage_list, color_list, w_save = len(sys.argv)-1, alre
     status_list = []
     Pseudo_done_global = []
     
+    Fig_Data = {}
+    Freq_Data = {}
     for k in range(len(lineage_list)):
         if lineage_list[k][-4:] == ".ALL" and not re.search("/", lineage_list[k]):
             splited_var = []
@@ -437,6 +440,19 @@ def plot_fit(ES_df_dir, lineage_list, color_list, w_save = len(sys.argv)-1, alre
             #ax_k_twin.scatter(t_prop_aligned, Pseudo_Prop_masked, marker = ".", color = color_list[k])
             ax_k.axhline(xmin = 0, xmax = len(t_dates), ls = "--", linewidth = 2, color = "black")
             
+            
+            if "dates_gamma" not in list(Fig_Data.keys()):
+                Fig_Data["dates_gamma"] = np.array(t_dates)[inds_dates]
+                
+            Fig_Data["%s (gamma_y MIN)"%(lab_k)] = gamma_SI_min
+            Fig_Data["%s (gamma_y MAX)"%(lab_k)] = gamma_SI_max
+            Fig_Data["%s (gamma_y MEAN)"%(lab_k)] = (gamma_SI_min + gamma_SI_max)/2
+            
+            if "dates_freqs" not in list(Freq_Data.keys()):
+                Freq_Data["dates_freqs"] = np.array(day_prop)[np.array(t_prop_aligned).astype(int)] 
+                
+            Freq_Data["%s (Frequency)"%(lab_k)] = 100*Pseudo_Prop_masked
+            
             ymin1, ymax1 = ax_k.get_ylim()
             ymin2, ymax2 = ax_k_twin.get_ylim()
             #ymin, ymax = min(ymin1, ymin2), max(ymax1, ymax2)
@@ -547,10 +563,11 @@ def plot_fit(ES_df_dir, lineage_list, color_list, w_save = len(sys.argv)-1, alre
             ax2_twin = ax2.twinx()
             
             gamma_prop_masked = ma.masked_array(gamma_prop, mask = SI_mask)
+            
             ax2.fill_between(inds_dates, gamma_SI_min, gamma_SI_max, color = "green", alpha = 0.3, label = lab_k)
             ax2_twin.plot(inds_dates, gamma_prop_masked, color = "orange", label=lab_k)
             #ax2_twin.scatter(inds_dates, gamma_prop_masked, marker = ".", color = "orange")
-
+            
             ax2.set_xticks(perday_orig)
             ax2.set_xticklabels(date_ticks,
                 rotation = 45, horizontalalignment = "right")
@@ -683,6 +700,12 @@ def plot_fit(ES_df_dir, lineage_list, color_list, w_save = len(sys.argv)-1, alre
     if (x_min is not None):
         ax.set_xlim((x_min, x_max))
         ax_twin.set_xlim((x_min1, x_max1))
+    
+    Df = pd.DataFrame(Fig_Data)
+    Df.to_excel(sys.argv[w_save]+"/Fig3B_gamma.xlsx")
+    
+    Df2 = pd.DataFrame(Freq_Data)
+    Df2.to_excel(sys.argv[w_save]+"/Fig3B_Freqs.xlsx")
     
     #ax.legend(loc = (1.2, 0.) ,fontsize = 20, ncols = np.ceil(len(lineage_list)/4).astype(int))
     ax.legend(loc='upper center', bbox_to_anchor=(0.5, -0.27),fancybox=True, shadow=True, ncol=5)
