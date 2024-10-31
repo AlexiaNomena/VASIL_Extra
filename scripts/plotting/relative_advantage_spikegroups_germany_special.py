@@ -410,7 +410,8 @@ def plot_fit(ES_df_dir, lineage_list, color_list, w_save = len(sys.argv)-1, alre
                 Prop_after = Prop_after.to_numpy()
             except:
                 1+1
-                
+            
+            
             Prop_after_lower = Prop_after - lower_ci(z_crit, Prop_after, genomes_month.values)
             Prop_after_lower[Prop_after_lower <0 ] = 0
             Prop_after_upper = Prop_after + upper_ci(z_crit, Prop_after, genomes_month.values)
@@ -449,9 +450,11 @@ def plot_fit(ES_df_dir, lineage_list, color_list, w_save = len(sys.argv)-1, alre
             Fig_Data["%s (gamma_y MEAN)"%(lab_k)] = (gamma_SI_min + gamma_SI_max)/2
             
             if "dates_freqs" not in list(Freq_Data.keys()):
-                Freq_Data["dates_freqs"] = np.array(day_prop)[np.array(t_prop_aligned).astype(int)] 
-                
-            Freq_Data["%s (Frequency)"%(lab_k)] = 100*Pseudo_Prop_masked
+                Freq_Data["dates_freqs"] = np.array(day_prop)[np.array(t_after).astype(int)] 
+            
+            Freq_Data["%s Mean Trend"%(lab_k)] = 100*Prop_after
+            Freq_Data["%s Lower CI "%(lab_k)] = 100*(Prop_after - Prop_after_lower)
+            Freq_Data["%s Upper CI"%(lab_k)] = 100*(Prop_after + Prop_after_lower )
             
             ymin1, ymax1 = ax_k.get_ylim()
             ymin2, ymax2 = ax_k_twin.get_ylim()
