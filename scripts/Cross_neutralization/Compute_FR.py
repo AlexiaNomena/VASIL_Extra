@@ -860,19 +860,11 @@ if Lin_name not in ("ALL", "FR_DMS_sites", "missing", "only_delta"):
                     Ab_global = Cross_global.keys()
                     file_c.close()
 
-                    if Pseudogroup_dic[Lin_list[i]] not in list(variant_x_names_cross):
-                        w_lin = len(variant_x_names_cross)
-                        Cross_i["variant_list"] = list(variant_x_names_cross) + [Lin_list[i]]
-                    else:
-                        w_lin = list(variant_x_names_cross).index(Pseudogroup_dic[Lin_list[i]])
-                        Cross_i["variant_list"] = list(variant_x_names_cross)
-                        Cross_i["variant_list"][w_lin] = Lin_list[i]
-
+                    w_lin = len(variant_x_names_cross)
+                    Cross_i["variant_list"] = list(variant_x_names_cross) + [Lin_list[i]]
+                    
                     for ab in Ab_global:  
-                        if Pseudogroup_dic[Lin_list[i]] not in list(variant_x_names_cross):
-                            FRxy_ab = np.ones((len(variant_x_names_cross)+1, len(variant_x_names_cross)+1))
-                        else:
-                            FRxy_ab = np.ones((len(variant_x_names_cross), len(variant_x_names_cross)))
+                        FRxy_ab = np.ones((len(variant_x_names_cross)+1, len(variant_x_names_cross)+1))
                             
                         for u1 in range(len(variant_x_names_cross)):
                             v_u1 = variant_x_names_cross[u1]

@@ -833,6 +833,7 @@ else:
                 Cross_var.pop("variant_list")
                 file1.close()
                 lin_clean = var.split("*_as_")[0]
+                print(var, "BA.4" in variants_var)
             
                 for i in range(len(variants_in_cross)-len(vacc_names)):
                     add_cross[len(variants_in_cross)-len(vacc_names)+j, i] = Cross_var[ab][list(variants_var).index(lin_clean), list(variants_var).index(variants_in_cross[i])] 
