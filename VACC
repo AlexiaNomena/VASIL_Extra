@@ -32,6 +32,19 @@ if config["all_il"]:
 rule_all_common.append("vaccination/plots/ALL_vs_Vacc_ver1/Susceptible_Trends_ALL_vs_Vacc.pdf"),
 rule_all_common.append("vaccination/plots/ALL_vs_Vacc_ver2/Susceptible_Trends_ALL_vs_Vacc.pdf"),
 
+
+try:
+    if config["plot_groups"]:
+        plg = True
+    else:
+        plg = False    
+except:
+    plg = False
+    
+if plg:
+    rule_all_common.append("vaccination/plots/relative_groups/As_Lineages/plot_status.csv")
+    rule_all_common.append("vaccination/plots/relative_groups/As_Spikegroups/plot_status.csv") 
+
 rule all:
     input:
         rule_all_common,
@@ -306,3 +319,42 @@ rule compare_trends_ver2:
         res="vaccination/plots/ALL_vs_Vacc_ver2/Susceptible_Trends_ALL_vs_Vacc.pdf",
     shell:
         "python {workflow.basedir}/scripts/vaccination/compare_vacc_to_infections.py {input.mean_trends_1} {input.mean_trends_2} {input.vacc_infos} {input.S_vacc_dir1} {input.S_vacc_dir2} {input.spikes_dic} {params.total_pop} {params.date_start} {params.date_end} {output.dir}"
+
+
+if plg:
+
+    rule get_relative_lineages:
+        input:
+            ES_lin_dir=config["S_groups"],
+            spikes_freqs="results/Daily_SpikeGroups_Freq.csv",
+            mean_trend="vaccination/Susceptible_weighted_mean_over_spikegroups_vs_Vacc_ver2_all_PK.csv",
+        params:
+            threshold=config["weight_prop"],
+            lineage_focus=config["compare_groups"],
+            date_start_plots=config["date_start_plots"],
+            date_end_plots=config["date_end_plots"],
+            col_groups=config["color_groups"],
+            len_groups=len(config["compare_groups"]),
+        output:
+            res_dir=directory("vaccination/plots/relative_groups/As_Lineages"),
+            res="vaccination/plots/relative_groups/As_Lineages/plot_status.csv",
+        shell:
+            "python {workflow.basedir}/scripts/plotting/relative_advantage_lineages.py {input.ES_lin_dir} {input.mean_trend} {input.spikes_freqs} {params.threshold} {params.date_start_plots} {params.date_end_plots} {params.len_groups} {output.res_dir} {params.lineage_focus} {params.col_groups}"
+
+    rule get_relative_spikegroups:
+        input:
+            ES_lin_dir=config["S_groups"],
+            spikes_freqs="results/Daily_SpikeGroups_Freq.csv",
+            mean_trend="vaccination/Susceptible_weighted_mean_over_spikegroups_vs_Vacc_ver2_all_PK.csv",
+        params:
+            threshold=config["weight_prop"],
+            lineage_focus=config["compare_groups"],
+            date_start_plots=config["date_start_plots"],
+            date_end_plots=config["date_end_plots"],
+            col_groups=config["color_groups"],
+            len_groups=len(config["compare_groups"]),
+        output:
+            res_dir=directory("vaccination/plots/relative_groups/As_Spikegroups"),
+            res="vaccination/plots/relative_groups/As_Spikegroups/plot_status.csv",
+        shell:
+            "python {workflow.basedir}/scripts/plotting/relative_advantage_spikegroups.py {input.ES_lin_dir} {input.mean_trend} {input.spikes_freqs} {params.threshold} {params.date_start_plots} {params.date_end_plots} {params.len_groups} {output.res_dir} {params.lineage_focus} {params.col_groups}"
