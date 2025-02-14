@@ -519,7 +519,7 @@ def ei_util(Lin_name, variants_in_cross, antigen_list,
                 print("joblib.Parallel failed running, using brute force looping")
                 for i in range(len(antigen_list)): ## "Wuhan-Hu-1" is always in each cross reactivity files produced by our pipeline
                     antigen = antigen_list[i]
-                    EnvD_Min,EnvD_Max = PNeut_Envelope(1, t_conc, [Lin_name], variants_in_cross, Cross_react_dic, c_dframe_dic, IC50xx_dic, antigen_list = antigen_list, mean_IC50xx = True)
+                    EnvD_Min,EnvD_Max = PNeut_Envelope(0, t_conc, [Lin_name], variants_in_cross, Cross_react_dic, c_dframe_dic, IC50xx_dic, antigen_list = [antigen], mean_IC50xx = True)
                     if EnvD_Min is not None:
                         VE["Proba Neut Min\n vs. %s antigen"%antigen] = EnvD_Min
                         VE["Proba Neut Max\n vs. %s antigen"%antigen] = EnvD_Max
