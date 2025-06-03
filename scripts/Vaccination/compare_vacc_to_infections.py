@@ -163,7 +163,8 @@ def Display_Envelops(t, t_dates, Y, Z, is_log, labels, figsize = (7, 7), xysize 
     
     plt.xlabel(xval, fontsize = labsize)
     #plt.legend(loc = (1.2, 0), fontsize = labsize, ncols = np.ceil(len(labels)/15).astype(int))
-    plt.legend(loc = (0.25, -1), fontsize = labsize, ncols = 2)
+    #plt.legend(loc = (0.25, -1), fontsize = labsize, ncols = 2)
+    plt.legend(loc = (-0.05, 1.1), fontsize = labsize, ncols = 2)
     if len(t)>200:
         pp = 7*8
     else:
@@ -178,16 +179,16 @@ def Display_Envelops(t, t_dates, Y, Z, is_log, labels, figsize = (7, 7), xysize 
     ax.set_xticks(t_ticks)
     ax.set_xticklabels(t_ticks_labels, rotation = 45, horizontalalignment = "right")
     ax.set_xlim((t[0], t[-1]))
-    ax.set_ylim((0e6, 85e6))
+    ax.set_ylim((40e6, 86e6))
     if yfmt is not None:
-        y_ticks = np.arange(0e6, 86e6, 10*10**yfmt)
+        y_ticks = np.arange(40e6, 87e6, 5*10**yfmt)
         #if np.abs(np.max(Y) - y_ticks[-1]) > 10**yfmt:
         #    y_ticks = np.append(y_ticks, (np.max(Y)//10**yfmt)*10**yfmt)
             
         ax.set_yticks(y_ticks)
-        ax.set_yticklabels(["%d"%(y_ticks[i]//10**yfmt) for i in range(0, len(y_ticks)-1)]+["%d x $ 10^{6}$"%(y_ticks[-1]//10**yfmt)])
+        ax.set_yticklabels(["%d"%(y_ticks[i]//10**yfmt) for i in range(0, len(y_ticks)-1)]+[r"$^{\times 10^{6}}$"%(y_ticks[-1]//10**yfmt)])
         #ax.get_yaxis().set_major_formatter(matplotlib.ticker.FuncFormatter(lambda x, p:format(int(x)//10, ",")))
-    
+        ax.set_ylim((40e6, y_ticks[-1]))
     if save_to[-3:] == "pdf":
         ### save figure in pdf ###
         pdf = PdfPages(save_to)
@@ -206,7 +207,7 @@ def Display_Envelops(t, t_dates, Y, Z, is_log, labels, figsize = (7, 7), xysize 
     else:
         return fig, ax
     
-    
+            
 def Display(t, t_dates, Y, is_log, labels, figsize = (7, 7), xysize = (15,15), labsize = 32, save_to = "test", xval = "x", yval = "f(x)", 
             linewidth = 3, palette = None, linestyle = None, color = None, ax = None, fig = None, linecolor = None ,alpha = 0.5, mode = None, get_file = False, yfmt = None):
     
@@ -239,8 +240,8 @@ def Display(t, t_dates, Y, is_log, labels, figsize = (7, 7), xysize = (15,15), l
         plt.ylabel("%s"%yval, fontsize = labsize)  
     
     plt.xlabel(xval, fontsize = labsize)
-    plt.legend(loc = (1.2, 0), fontsize = labsize, ncols = np.ceil(len(labels)/15).astype(int))
-    
+    #plt.legend(loc = (1.2, 0), fontsize = labsize, ncols = np.ceil(len(labels)/15).astype(int))
+    plt.legend(loc = (-0.1, 1.1), fontsize = labsize, ncols = 2)
     if len(t)>200:
         pp = 7*8
     else:
@@ -255,7 +256,7 @@ def Display(t, t_dates, Y, is_log, labels, figsize = (7, 7), xysize = (15,15), l
     ax.set_xticks(t_ticks)
     ax.set_xticklabels(t_ticks_labels, rotation = 45, horizontalalignment = "right")
     ax.set_xlim((t[0], t[-1]))
-    ax.set_ylim((-0.3e6, 7e6))
+    ax.set_ylim((-0.3e6, 70e6))
     
     if yfmt is not None:
         #y_ticks = np.arange(0, np.max(Y), 10*10**yfmt)
@@ -263,10 +264,10 @@ def Display(t, t_dates, Y, is_log, labels, figsize = (7, 7), xysize = (15,15), l
         #if np.abs(np.max(Y) - y_ticks[-1]) > 10**yfmt:
             #y_ticks = np.append(y_ticks, (np.max(Y)//10**yfmt)*10**yfmt)
         #y_ticks = np.append(y_ticks, (np.ceil(np.max(Y)/10**yfmt))*10**yfmt)
-        y_ticks = np.append(y_ticks, 7e6)
+        y_ticks = np.append(y_ticks, 70e6)
             
         ax.set_yticks(y_ticks)
-        ax.set_yticklabels([0]+["%d"%(y_ticks[i]//10**yfmt) for i in range(1, len(y_ticks)-1)]+["%d x $ 10^{6}$"%(y_ticks[-1]//10**yfmt)])
+        ax.set_yticklabels([0]+["%d"%(y_ticks[i]//10**yfmt) for i in range(1, len(y_ticks)-1)] +[r"$^{\times 10^{6}}$"%(y_ticks[-1]//10**yfmt)])
         #ax.get_yaxis().set_major_formatter(matplotlib.ticker.FuncFormatter(lambda x, p:format(int(x)//10, ",")))
     
     if save_to[-3:] == "pdf":

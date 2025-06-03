@@ -75,6 +75,7 @@ for col in Columns:
                             col_new = col
                             if "bivalent" in col:
                                 Timeline["BA.5*_as_"+col_new] = np.array(df_Vaccines[col])
+                                #Timeline["BA.4*_as_"+col_new] = np.array(df_Vaccines[col])
                             else:
                                 Timeline["Wuhan-Hu-1*_as_"+col_new] = np.array(df_Vaccines[col])
                         elif vacc_considered == "bivalent_boosters":
@@ -83,6 +84,7 @@ for col in Columns:
                                 col_kept.append(col)
                                 col_new = col
                                 Timeline["BA.5*_as_"+col_new] = np.array(df_Vaccines[col])
+                                #Timeline["BA.4*_as_"+col_new] = np.array(df_Vaccines[col])
                                 
 
 print("Vaccines condidered:", col_kept)
