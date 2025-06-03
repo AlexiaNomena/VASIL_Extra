@@ -31,7 +31,7 @@ The name of the variant representing the vaccine is added to the name of each va
 - Configure parameters `working_directory/vacc_config.yaml` ... For example, `working_directory = data/ByCountry/Germany`
 - Run the snakemake pipeline from the terminal
   ```
-  snakemake --snakefile VACC --configfile `working_directory/vacc_config.yaml` -j -d working_directory
+  snakemake --snakefile VACC --configfile working_directory/vacc_config.yaml -j -d working_directory
   ```
 - The results will be found in a newly created or updated directory `working_directory/vaccination`. The RELEVANT results are
   * Directory `working_directory/vaccination/Immunological_Landscape_ALL` contains the immune landscape without vaccination, and the weighted mean is `working_directory/vaccination/Susceptible_weighted_mean_over_spikegroups_all_PK.csv`
