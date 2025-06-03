@@ -14,4 +14,4 @@ Check if `scripts/Vaccination/Process_Vaccination_Timeline.py` contains elements
 The name of the variant representing the vaccine is added to the name of each vaccine considered (from the front): The mutation profile of this variant is used to compute a neutralization probability that corresponds to the vaccine, and this variant must be present in the genomic surveillance dataset, otherwise there will be a code error
 
 
-
+### Step 2: 
