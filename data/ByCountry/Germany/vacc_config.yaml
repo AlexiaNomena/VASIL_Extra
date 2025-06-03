@@ -20,7 +20,7 @@ weight_prop: 0.01 ### see config_plots parameters
 date_start_plots: "2021-12-01" 
 date_end_plots: "2023-09-02"
 
-plot_groups: TRUE
+plot_groups: TRUE ## if FALSE: Everything below is ingnored
 S_groups: "vaccination/ImL_ALL_vs_Vacc_ver2"
 #compare_groups: ["BA.1.1", "BA.2", "BA.4/BE.1.1/BA.5", "BQ.1.1", "EG.1/XBB.1.5", "XBB.1.9.ALL", "BF.7"]# "EG.5.1", "XBB.1.16/XBB.1.16.1", "XBB.1.9/EG.1.3/XBB.1.9.2"]#, "BA.2.86.ALL/JN.1/BA_2_86"] ### assuming that they are pre-computed and located in: S_groups/Susceptible_SpikeGroup_*_all_PK.csv *=lineage or in results/Immunological_Landscape_ALL/Susceptible_SpikeGroup_*_all_PK.csv *=spikegroup of lineage, or in results/Immunological_Landscape/Susceptible_SpikeGroup_*_all_PK.csv *=lineage name), the average relative fitness is taken for the grouped variants separated by "/"
 #compare_groups: ["EG.5.1", "XBB.1.16/XBB.1.16.1", "XBB.1.9/EG.1.3/XBB.1.9.2", "BA.2.86", "BA.2.ALL", "BA.4/BE.1.1/BA.5", "BQ.1.1", "EG.1/XBB.1.5", "XBB.1.9.ALL", "BF.7","JN.1","KP.1/KP.2/KP.3"] ### assuming that they are pre-computed and located in: S_groups/Susceptible_SpikeGroup_*_all_PK.csv *=lineage or in results/Immunological_Landscape_ALL/Susceptible_SpikeGroup_*_all_PK.csv *=spikegroup of lineage, or in results/Immunological_Landscape/Susceptible_SpikeGroup_*_all_PK.csv *=lineage name), the average relative fitness is taken for the grouped variants separated by "/"
