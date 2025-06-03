@@ -9,7 +9,7 @@ date_switch_vacc: "None" ### before date Wuhan-Hu-1 vaccines, after date 1/2 BA.
 VE_delta: "Clinical_Delta_VE.xlsx"
 # 3. Full path to GInPipe incidence data
 cases: "phi_incidence_estimates_ginpipe_wastewater_cutdate_2023-04-01.csv"
-cases_column: "min_n_true" ## provide the data column name of the case ascertainment that you want to use
+cases_column: "min_n_true" ## provide the data column name for the minimum number of infected estimate
 all_il: TRUE # get all immunological landscapes (see main config parameters)
 cross_missing: FALSE # compute cross for missing spikegroups (see main config parameters)
 date_start: "2021-07-01" # start immunological landscape (see main config parameters)
