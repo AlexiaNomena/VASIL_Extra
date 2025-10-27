@@ -11,6 +11,7 @@ import pandas as pd
 import pdb
 import numpy as np
 import pickle
+import datetime
 
 try:
     df_Vaccines = pd.read_csv(sys.argv[1])
@@ -26,24 +27,32 @@ vacc_considered = str(sys.argv[5])
 save_mut_to = str(sys.argv[-2])
 save_to = str(sys.argv[-1])
 
-### Drop dates between 
-if date_start in df_Vaccines["date"].tolist():
-    df_Vaccines.drop(index = df_Vaccines.index[:list(df_Vaccines["date"]).index(date_start)], inplace = True)
-
-if date_end in df_Vaccines["date"].to_list():
-    df_Vaccines.drop(index = df_Vaccines.index[list(df_Vaccines["date"]).index(date_end)+1:], inplace = True)
-
-
+### Drop unnecessary columns
 df_Vaccines.drop(columns = "impfungen_boost1", inplace = True)
 df_Vaccines.drop(columns = "impfungen_boost2", inplace = True)
 df_Vaccines.drop(columns = "impfungen_boost3", inplace = True)
 df_Vaccines.drop(columns = "impfungen_boost4", inplace = True)
 
+### Drop dates between 
+if date_start in df_Vaccines["date"].tolist():
+    df_Vaccines.drop(index = df_Vaccines.index[:list(df_Vaccines["date"]).index(date_start)], inplace = True)
+
+
+if date_end in df_Vaccines["date"].to_list():
+    df_Vaccines.drop(index = df_Vaccines.index[list(df_Vaccines["date"]).index(date_end)+1:], inplace = True)
+elif date_end > df_Vaccines["date"].to_list()[-1]:
+    # extend dates to include full VASIL simulation
+    sdate = datetime.datetime.strptime(df_Vaccines["date"].to_list()[-1], "%Y-%m-%d")
+    edate = datetime.datetime.strptime(date_end, "%Y-%m-%d")
+    days_add = pd.date_range(sdate, edate - datetime.timedelta(days = 1), freq = "d").strftime('%Y-%m-%d').to_list() + [date_end]
+    df2 = pd.DataFrame([[0]*len(df_Vaccines.columns.to_list())]*len(days_add), columns = df_Vaccines.columns.to_list(), index = np.arange(len(df_Vaccines["date"].tolist()), len(df_Vaccines["date"].tolist()) + len(days_add), dtype = int))
+    df2["date"] = days_add
+    df_Vaccines = df_Vaccines.append(df2, ignore_index = True)
+
 
 dates_vacc = df_Vaccines["date"].to_list()
 ### Extract relevant vaccine columns
 Columns = df_Vaccines.columns
-
 Timeline = {}
 Timeline["date"] = dates_vacc
 col_kept = []

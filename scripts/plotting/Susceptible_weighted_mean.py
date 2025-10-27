@@ -135,6 +135,7 @@ for x in range(len(SpikeGroups_list)):
             Pseudo_Prop_Masked = ma.masked_array(Prop_sub, mask = mask_ind)
             #dprop_all[:, x] = np.diff(np.log(Pseudo_Prop[:len(t)][0]))
             #Estimated susceptible
+        	
             for i in range(EI_ranges.shape[1]):
                 S_i = (N_pop - EI_ranges[:, i])
                 pS_all[:, x, i] = Pseudo_Prop_Masked*S_i[:len(t)-1] ### weighted susceptible, remove the last value to be comparable the prop change timeline

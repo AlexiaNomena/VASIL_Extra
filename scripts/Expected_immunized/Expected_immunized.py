@@ -948,7 +948,7 @@ else:
                         print("Compute E[immunized] for %s (%d out of %d spikegroups + Wuhan-Hu-1)"%(SpikeGroups_list[i], i+1, len(SpikeGroups_list)-1))
                 else:
                     print("Compute E[immunized] against all vaccines for %s (%d out of %d spikegroups + Wuhan-Hu-1)"%(SpikeGroups_list[i], i+1, len(SpikeGroups_list)-1))
-                    
+                
                 status_var.append(ei_util(SpikeGroups_list[i], 
                                           infection_data = infection_data_corrected,
                                           variants_in_cross = variants_in_cross,
